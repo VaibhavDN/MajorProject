@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutConstraint_appIcon"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
+    android:layout_margin="5sp"
+    android:padding="5sp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <ImageView
         android:id="@+id/appIcon_ImageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="48sp"
         android:src="@mipmap/ic_launcher"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="5sp"
+        app:layout_constraintBottom_toTopOf="@id/appIcon_TextView"
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="@string/_app_name"/>
 
     <TextView
         android:id="@+id/appIcon_TextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/_app_name"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textColor="#333"
         android:gravity="center_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/appIcon_ImageView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
