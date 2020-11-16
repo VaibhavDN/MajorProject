@@ -8,11 +8,15 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.graphics.alpha
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +47,11 @@ class MainActivity : AppCompatActivity() {
                         //Skip
                     }
                 }
+                //val periodicWorkRequest = OneTimeWorkRequestBuilder<GetAppUsageWorker>().build()
+                //WorkManager.getInstance(applicationContext).enqueue(periodicWorkRequest)
+                val periodicWorkRequest = PeriodicWorkRequestBuilder<GetAppUsageWorker>(15, TimeUnit.MINUTES).build()
+                val workTag = "UsageWork"
+                WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(workTag, ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequest)
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {

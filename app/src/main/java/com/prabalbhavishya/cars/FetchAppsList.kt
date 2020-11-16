@@ -11,7 +11,6 @@ class FetchAppsList {
         val untreatedAppList : List<ResolveInfo> = context.packageManager.queryIntentActivities(intent, 0)
 
         val finalAppsList: ArrayList<AppObject> = ArrayList()
-        val finalAppsSet: HashSet<AppObject> = HashSet()
 
         for(app : ResolveInfo in untreatedAppList){
             val appName : String = app.activityInfo.loadLabel(context.packageManager).toString()
