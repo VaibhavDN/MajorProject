@@ -3,4 +3,5 @@
     <string name="_app_name">App Name</string>
     <string name="showusagestats">showUsageStats</string>
     <string name="search">Search</string>
+    <string name="usage_stats">Usage Stats:</string>
 </resources>

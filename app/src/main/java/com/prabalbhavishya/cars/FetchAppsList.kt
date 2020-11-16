@@ -11,6 +11,7 @@ class FetchAppsList {
         val untreatedAppList : List<ResolveInfo> = context.packageManager.queryIntentActivities(intent, 0)
 
         val finalAppsList: ArrayList<AppObject> = ArrayList()
+        val finalAppsSet: HashSet<AppObject> = HashSet()
 
         for(app : ResolveInfo in untreatedAppList){
             val appName : String = app.activityInfo.loadLabel(context.packageManager).toString()
@@ -18,7 +19,7 @@ class FetchAppsList {
             val appIcon : Drawable = app.activityInfo.loadIcon(context.packageManager)
             val appObject = AppObject(appName, packageName, appIcon)
 
-            if(appName == "CARS2"){
+            if(appName == "CARS"){
                 continue
             }
 

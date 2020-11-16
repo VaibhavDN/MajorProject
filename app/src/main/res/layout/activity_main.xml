@@ -9,6 +9,7 @@
     android:orientation="vertical"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:fitsSystemWindows="true"
     android:background="@drawable/road">
 
     <LinearLayout
@@ -80,5 +81,5 @@
         </androidx.viewpager.widget.ViewPager>
     </LinearLayout>
 
-    <include layout="@layout/layout_bottomsheet"/>
+    <include layout="@layout/layout_bottomsheet" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
