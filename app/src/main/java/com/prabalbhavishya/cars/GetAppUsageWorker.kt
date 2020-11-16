@@ -88,7 +88,7 @@ class GetAppUsageWorker(context: Context, workerParameters: WorkerParameters): W
         //Save usage stats on disk
         val path = applicationContext.getExternalFilesDir("UsageDir")
         val file = File(path, "appUsageData.csv")
-        val fileOutputStream = FileOutputStream(file)
+        val fileOutputStream = FileOutputStream(file, true)
         fileOutputStream.write(textToSave.toByteArray())
         fileOutputStream.close()
 
