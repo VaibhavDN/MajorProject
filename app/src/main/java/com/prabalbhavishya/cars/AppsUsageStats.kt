@@ -1,16 +1,19 @@
+@file:Suppress("DEPRECATION")
+
 package com.prabalbhavishya.cars
+
 import android.app.AppOpsManager
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 class UsageStats : AppCompatActivity() {
     private var MY_USAGE_REQUEST_CODE = 1
@@ -21,28 +24,47 @@ class UsageStats : AppCompatActivity() {
 
         val appOps: AppOpsManager = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
 
-        if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.Q){
-            if(appOps.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), packageName) != PackageManager.PERMISSION_GRANTED){
-                startActivityForResult(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), MY_USAGE_REQUEST_CODE)
+        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.Q) {
+            if (appOps.unsafeCheckOpNoThrow(
+                    AppOpsManager.OPSTR_GET_USAGE_STATS,
+                    android.os.Process.myUid(),
+                    packageName
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                startActivityForResult(
+                    Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
+                    MY_USAGE_REQUEST_CODE
+                )
             }
-        }
-        else if(appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), packageName) != PackageManager.PERMISSION_GRANTED){
+        } else if (appOps.checkOpNoThrow(
+                AppOpsManager.OPSTR_GET_USAGE_STATS,
+                android.os.Process.myUid(),
+                packageName
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             /*val permissionString = Array<String>(1){""}
             permissionString[0] = android.Manifest.permission.PACKAGE_USAGE_STATS
             ActivityCompat.requestPermissions(this, permissionString, MY_USAGE_REQUEST_CODE)*/
-            startActivityForResult(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), MY_USAGE_REQUEST_CODE)
-        }
-        else{
-            val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-            Log.d("StartTime: ", (System.currentTimeMillis()-1000*60*15).toString())
-            Log.d("End Time: ", (System.currentTimeMillis()+10000).toString())
-            val usageEvents: UsageEvents = usageStatsManager.queryEvents(System.currentTimeMillis() - 1000*60*15, System.currentTimeMillis()+10000)
+            startActivityForResult(
+                Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
+                MY_USAGE_REQUEST_CODE
+            )
+        } else {
+            val usageStatsManager =
+                getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+            Log.d("StartTime: ", (System.currentTimeMillis() - 1000 * 60 * 15).toString())
+            Log.d("End Time: ", (System.currentTimeMillis() + 10000).toString())
+            val usageEvents: UsageEvents = usageStatsManager.queryEvents(
+                System.currentTimeMillis() - 1000 * 60 * 15,
+                System.currentTimeMillis() + 10000
+            )
 
             val fetchList = FetchAppsList()
-            val myAppsList : ArrayList<AppObject> = fetchList.fetchList(this)
-            Toast.makeText(applicationContext, myAppsList.size.toString(), Toast.LENGTH_SHORT).show()
+            val myAppsList: ArrayList<AppObject> = fetchList.fetchList(this)
+            Toast.makeText(applicationContext, myAppsList.size.toString(), Toast.LENGTH_SHORT)
+                .show()
             val usageStatsTextView = findViewById<TextView>(R.id.usageStats_TextView1)
-            var hashMap: HashMap<String, Long> = HashMap()
+            val hashMap: HashMap<String, Long> = HashMap()
             val allEvents: ArrayList<UsageEvents.Event> = ArrayList()
 
             //Get all events where an app was resumed or paused
@@ -81,15 +103,14 @@ class UsageStats : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult
-    (
+    override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
         data: Intent?
     ) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == MY_USAGE_REQUEST_CODE){
-            if(resultCode == RESULT_OK){
+        if (requestCode == MY_USAGE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
                 Toast.makeText(applicationContext, "Permission Granted", Toast.LENGTH_SHORT).show()
                 return
             }
