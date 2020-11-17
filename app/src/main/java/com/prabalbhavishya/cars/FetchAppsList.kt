@@ -3,6 +3,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ResolveInfo
 import android.graphics.drawable.Drawable
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
 
 class FetchAppsList {
     fun fetchList(context: Context) : ArrayList<AppObject>{
@@ -24,6 +27,14 @@ class FetchAppsList {
 
             finalAppsList.add(appObject)
         }
+
+        Collections.sort(finalAppsList, CustomComparator())
         return finalAppsList
+    }
+
+    class CustomComparator : Comparator<AppObject>{
+        override fun compare(o1: AppObject?, o2: AppObject?): Int {
+            return o1!!.get_appName().compareTo(o2!!.get_appName())
+        }
     }
 }
