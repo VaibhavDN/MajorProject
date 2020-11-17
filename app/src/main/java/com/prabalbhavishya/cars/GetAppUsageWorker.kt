@@ -5,13 +5,19 @@ import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.text.format.DateUtils
 import android.util.Log
-import android.widget.Toast
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import java.io.File
 import java.io.FileOutputStream
 
 class GetAppUsageWorker(context: Context, workerParameters: WorkerParameters): Worker(context, workerParameters) {
+    class AppEventData{
+        var time = ""
+        var date = ""
+        var timeInForeground:Long = 0
+        var packageName = ""
+    }
+
     override fun doWork(): Result {
         val usageStatsManager =
             applicationContext.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
@@ -22,10 +28,8 @@ class GetAppUsageWorker(context: Context, workerParameters: WorkerParameters): W
             System.currentTimeMillis() + 10000
         )
 
-        val fetchList = FetchAppsList()
-        val myAppsList: ArrayList<AppObject> = fetchList.fetchList(applicationContext)
         //Toast.makeText(applicationContext, myAppsList.size.toString(), Toast.LENGTH_SHORT).show()
-        val hashMap: HashMap<String, UsageStats.EventData> = HashMap()
+        val hashMap: HashMap<String, AppEventData> = HashMap()
         val allEvents: ArrayList<UsageEvents.Event> = ArrayList()
 
         //Get all events where an app was resumed or paused
@@ -35,7 +39,7 @@ class GetAppUsageWorker(context: Context, workerParameters: WorkerParameters): W
             if (currentEvent.eventType == UsageEvents.Event.ACTIVITY_RESUMED || currentEvent.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
                 allEvents.add(currentEvent)
                 val packageName = currentEvent.packageName
-                val eventData = UsageStats.EventData()
+                val eventData = AppEventData()
                 hashMap[packageName] = eventData
             }
         }
@@ -55,13 +59,17 @@ class GetAppUsageWorker(context: Context, workerParameters: WorkerParameters): W
             Log.d("Event 2 PackageName: ", event2.packageName.toString())
             Log.d("Event 1 ClassName: ", event1.className.toString())
             Log.d("Event 2 ClassName: ", event2.className.toString())
+            Log.d("Event 1 Timestamp: ", event1.timeStamp.toString())
+            Log.d("Event 2 Timestamp: ", event2.timeStamp.toString())
+            Log.d("timeInForeground: ", (event2.timeStamp - event1.timeStamp).toString())
+            Log.d("timeInForeground in seconds: ", ((event2.timeStamp - event1.timeStamp)/1000).toString())
 
             if(event1.eventType == UsageEvents.Event.ACTIVITY_RESUMED && event2.eventType == UsageEvents.Event.ACTIVITY_PAUSED && event1.className == event2.className){
                 val time = DateUtils.formatDateTime(applicationContext, event1.timeStamp, DateUtils.FORMAT_SHOW_TIME)
                 val date = DateUtils.formatDateTime(applicationContext, event1.timeStamp, DateUtils.FORMAT_SHOW_DATE)
-                val timeInForeground = (event2.timeStamp - event1.timeStamp)/1000
+                val timeInForeground:Long = (event2.timeStamp - event1.timeStamp)/1000
 
-                hashMap[event1.packageName]!!.timeInForeground.plus(timeInForeground) //!! for not null
+                hashMap[event1.packageName]!!.timeInForeground = hashMap[event1.packageName]!!.timeInForeground.plus(timeInForeground) //!! for not null
                 hashMap[event1.packageName]!!.time = time
                 hashMap[event1.packageName]!!.date = date
                 hashMap[event1.packageName]!!.packageName = event1.packageName

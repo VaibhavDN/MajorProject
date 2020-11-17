@@ -19,13 +19,6 @@ import java.nio.charset.Charset
 class UsageStats : AppCompatActivity() {
     private var MY_USAGE_REQUEST_CODE = 1
 
-    class EventData{
-        var time = ""
-        var date = ""
-        var timeInForeground = 0
-        var packageName = ""
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_usage_stats)
@@ -38,10 +31,15 @@ class UsageStats : AppCompatActivity() {
         try {
             val path = getExternalFilesDir("UsageDir")
             val file = File(path, "appUsageData.csv")
-            val fileInputStream = FileInputStream(file)
-            textInFile = fileInputStream.readBytes().toString(Charset.defaultCharset())
-            fileInputStream.close()
-            Log.d("AppsUsageStats: ", "Read successful")
+            if(!file.isFile){
+                throw Exception("File doesn't exist. Please wait for 15 minutes")
+            }
+            else{
+                val fileInputStream = FileInputStream(file)
+                textInFile = fileInputStream.readBytes().toString(Charset.defaultCharset())
+                fileInputStream.close()
+                Log.d("AppsUsageStats: ", "Read successful")
+            }
         }
         catch (e: Exception){
             textInFile = e.toString()
@@ -51,7 +49,7 @@ class UsageStats : AppCompatActivity() {
         usageStatsTextView.text = textInFile
     }
 
-    fun requestPermissionFromUser(){
+    private fun requestPermissionFromUser(){
         val appOps: AppOpsManager = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
@@ -81,7 +79,6 @@ class UsageStats : AppCompatActivity() {
             else{
                 Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
             }
-            finish()
         }
     }
 }
