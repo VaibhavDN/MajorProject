@@ -27,10 +27,11 @@
         android:text="@string/_app_name"
         android:maxLines="1"
         android:ellipsize="end"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
+        android:textScaleX="0.8"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/appIcon_ImageView"
-        app:layout_constraintEnd_toEndOf="@id/appIcon_ImageView"/>
+        app:layout_constraintEnd_toEndOf="@id/appIcon_ImageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

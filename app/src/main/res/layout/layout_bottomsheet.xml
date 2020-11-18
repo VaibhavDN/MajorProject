@@ -8,7 +8,7 @@
     app:behavior_hideable="false"
     app:behavior_peekHeight="90sp"
     android:layout_gravity="center_horizontal"
-    android:background="#6DFFFFFF"
+    android:background="@android:color/transparent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.recyclerview.widget.RecyclerView

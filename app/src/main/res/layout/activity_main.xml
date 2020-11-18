@@ -11,7 +11,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:fitsSystemWindows="true"
-    android:background="@drawable/road">
+    android:background="@drawable/dblue">
 
     <LinearLayout
         android:id="@+id/homeScreen_LinearLayout2"
@@ -94,18 +94,11 @@
         app:layout_anchor="@id/homeScreen_LinearLayout1"
         app:layout_anchorGravity="bottom"
         android:layout_gravity="bottom">
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/Theme.MaterialComponents.Light"
-            app:cardBackgroundColor="#6DFFFFFF"
-            android:elevation="8sp">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/appPrediction_RecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"/>
-            </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
     <include layout="@layout/layout_bottomsheet" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
