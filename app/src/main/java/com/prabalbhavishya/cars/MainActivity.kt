@@ -1,11 +1,13 @@
 package com.prabalbhavishya.cars
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -18,7 +20,6 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_bottomsheet.*
 import java.util.concurrent.TimeUnit
@@ -27,6 +28,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val googleButton = findViewById<Button>(R.id.search_btn)
+        googleButton.setOnClickListener {
+            Log.println(Log.VERBOSE, "Google icon clicked", "yes")
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")))
+        }
 
         val bottomSheet = findViewById<ConstraintLayout>(R.id.layoutBottomSheet)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
@@ -102,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
         //Prediction RecyclerView
         val predictionRecyclerView = findViewById<RecyclerView>(R.id.appPrediction_RecyclerView)
-        val linearLayoutManagerPredictionRecyclerView =
+        //val linearLayoutManagerPredictionRecyclerView =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         predictionRecyclerView.layoutManager = gridLayoutManager2
         val predictionRecyclerViewAdapter = PredictionRecyclerViewAdapter(predApplist)
@@ -132,11 +139,11 @@ class MainActivity : AppCompatActivity() {
         recyclerViewHotSeat.adapter = recyclerViewAdapterHotSeat
 
         //Launch App usage stats activity
-        val homeScreenFAB = findViewById<FloatingActionButton>(R.id.homeScreen_FAB)
-        homeScreenFAB.setOnClickListener {
-            val intentUsageStats = Intent(this, UsageStats::class.java)
-            startActivity(intentUsageStats)
-        }
+//        val homeScreenFAB = findViewById<FloatingActionButton>(R.id.homeScreen_FAB)
+//        homeScreenFAB.setOnClickListener {
+//            val intentUsageStats = Intent(this, UsageStats::class.java)
+//            startActivity(intentUsageStats)
+//        }
     }
 
     class PredictionRecyclerViewAdapter(private var predictedAppsList: ArrayList<AppObject>) :
@@ -158,9 +165,15 @@ class MainActivity : AppCompatActivity() {
 
             //holder.appIconTextView.text = predictedAppsList[position].get_appName()
             holder.appIconConstraintLayout.setOnClickListener {
-                Toast.makeText(holder.context, predictedAppsList[position].get_packageName(), Toast.LENGTH_SHORT).show()
-                val appLaunchIntent = holder.context.packageManager.getLaunchIntentForPackage(predictedAppsList[position].get_packageName())
-                if(appLaunchIntent != null){
+                Toast.makeText(
+                    holder.context,
+                    predictedAppsList[position].get_packageName(),
+                    Toast.LENGTH_SHORT
+                ).show()
+                val appLaunchIntent = holder.context.packageManager.getLaunchIntentForPackage(
+                    predictedAppsList[position].get_packageName()
+                )
+                if (appLaunchIntent != null) {
                     holder.context.applicationContext.startActivity(appLaunchIntent)
                 }
             }
@@ -195,9 +208,15 @@ class MainActivity : AppCompatActivity() {
 
             //holder.appIconTextView.text = myAppsList[position].get_appName()
             holder.appIconConstraintLayout.setOnClickListener {
-                Toast.makeText(holder.context, myAppsList[position].get_packageName(), Toast.LENGTH_SHORT).show()
-                val appLaunchIntent = holder.context.packageManager.getLaunchIntentForPackage(myAppsList[position].get_packageName())
-                if(appLaunchIntent != null){
+                Toast.makeText(
+                    holder.context,
+                    myAppsList[position].get_packageName(),
+                    Toast.LENGTH_SHORT
+                ).show()
+                val appLaunchIntent = holder.context.packageManager.getLaunchIntentForPackage(
+                    myAppsList[position].get_packageName()
+                )
+                if (appLaunchIntent != null) {
                     holder.context.applicationContext.startActivity(appLaunchIntent)
                 }
             }
@@ -222,7 +241,11 @@ class MainActivity : AppCompatActivity() {
                 parent: ViewGroup,
                 viewType: Int
             ): ViewHolder {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_appicon, parent, false)
+                val view = LayoutInflater.from(parent.context).inflate(
+                    R.layout.layout_appicon,
+                    parent,
+                    false
+                )
                 return ViewHolder(view)
             }
 
@@ -234,9 +257,15 @@ class MainActivity : AppCompatActivity() {
 
                 holder.appIconTextView.text = myAppsList[position].get_appName()
                 holder.appIconConstraintLayout.setOnClickListener {
-                    Toast.makeText(holder.context, myAppsList[position].get_packageName(), Toast.LENGTH_SHORT).show()
-                    val appLaunchIntent = holder.context.packageManager.getLaunchIntentForPackage(myAppsList[position].get_packageName())
-                    if(appLaunchIntent != null){
+                    Toast.makeText(
+                        holder.context,
+                        myAppsList[position].get_packageName(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    val appLaunchIntent = holder.context.packageManager.getLaunchIntentForPackage(
+                        myAppsList[position].get_packageName()
+                    )
+                    if (appLaunchIntent != null) {
                         holder.context.applicationContext.startActivity(appLaunchIntent)
                     }
                 }

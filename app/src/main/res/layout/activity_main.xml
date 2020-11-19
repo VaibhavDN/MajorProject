@@ -23,49 +23,37 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:layout_marginTop="2sp"
+            android:layout_marginTop="10sp"
             android:layout_marginBottom="2sp"
-            android:layout_marginEnd="2sp"
+            android:layout_marginEnd="15sp"
             android:layout_marginStart="15sp"
             android:padding="10sp"
             android:layout_gravity="center"
-            app:cardCornerRadius="10sp"
-            app:cardElevation="8sp"
             android:theme="@style/Theme.MaterialComponents.Light"
-            android:background="@color/cardview_light_background">
+            app:cardElevation="8sp"
+            app:cardCornerRadius="15sp">
 
-            <EditText
-                android:id="@+id/homeScreen_SearchTextView"
+            <Button
+                android:id="@+id/search_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_weight="5"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="2sp"
-                android:paddingTop="10sp"
-                android:paddingBottom="10sp"
-                android:paddingStart="20sp"
-                android:paddingEnd="5sp"
-                android:maxLines="1"
-                android:inputType="text"
-                android:hint="@string/search"
-                android:autofillHints="@string/search"
-                android:background="@drawable/home_screen_search_background"/>
+                android:background="@color/cardview_dark_background"
+                android:textAlignment="center" />
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/homeScreen_FAB"
-            android:layout_width="0sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20sp"
-            android:layout_marginEnd="15sp"
-            android:layout_marginBottom="20sp"
-            android:layout_marginStart="10sp"
-            android:padding="20sp"
-            android:layout_weight="1"
-            android:contentDescription="@string/showusagestats"
-            android:src="@mipmap/ic_launcher"/>
+        <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+        <!--            android:id="@+id/homeScreen_FAB"-->
+        <!--            android:layout_width="0sp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:layout_marginTop="20sp"-->
+        <!--            android:layout_marginEnd="15sp"-->
+        <!--            android:layout_marginBottom="20sp"-->
+        <!--            android:layout_marginStart="10sp"-->
+        <!--            android:padding="20sp"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:contentDescription="@string/showusagestats"-->
+        <!--            android:src="@mipmap/ic_launcher"/>-->
     </LinearLayout>
 
     <LinearLayout
