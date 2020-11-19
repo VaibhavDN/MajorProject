@@ -12,7 +12,6 @@
         android:id="@+id/appIcon_ImageView"
         android:layout_width="42sp"
         android:layout_height="42sp"
-        android:layout_margin="5sp"
         android:contentDescription="@string/_app_name"
         android:src="@mipmap/ic_launcher"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -71,14 +71,14 @@ class MainActivity : AppCompatActivity() {
                 Log.d("BottomSheet slideOffset: ", (slideOffset).toString())
                 //bottomSheet.setBackgroundColor(Color.argb((slideOffset * 255).toInt().coerceAtLeast(120), 255, 255, 255))
                 appDrawer_RecyclerView.alpha = slideOffset
-                hotSeat_RecyclerView.alpha = 1 - slideOffset
+                hotSeat_LinearView.alpha = 1 - slideOffset
                 homeScreen_LinearLayout2.alpha = 1 - slideOffset
                 homeScreen_LinearLayout3.alpha = 1 - slideOffset
 
                 if (slideOffset > 0.95) {
-                    hotSeat_RecyclerView.visibility = View.GONE
+                    hotSeat_LinearView.visibility = View.GONE
                 } else {
-                    hotSeat_RecyclerView.visibility = View.VISIBLE
+                    hotSeat_LinearView.visibility = View.VISIBLE
                 }
 
                 if (slideOffset < 0.05) {
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         val myAppsList: ArrayList<AppObject> = fetchList.fetchList(this)
         val predApplist = App_Prediction().predict_app(this)
 
-        val gridLayoutManager = GridLayoutManager(this, 5)
+        val gridLayoutManager = GridLayoutManager(this, 4)
         val gridLayoutManager2 = GridLayoutManager(this, 5)
         recyclerView.layoutManager = gridLayoutManager
         //recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.HORIZONTAL))
@@ -110,15 +110,15 @@ class MainActivity : AppCompatActivity() {
 
         val hotSeatAppsName: HashSet<String> = HashSet()
 
-        hotSeatAppsName.add("com.brave.browser_nightly")
-        hotSeatAppsName.add("com.google.android.GoogleCamera")
+        hotSeatAppsName.add("com.android.chrome")
+        hotSeatAppsName.add("com.android.contacts")
+        hotSeatAppsName.add("com.google.android.youtube")
         hotSeatAppsName.add("com.google.android.gm")
-        hotSeatAppsName.add("com.android.messaging")
-        hotSeatAppsName.add("com.android.dialer")
+        hotSeatAppsName.add("com.google.android.apps.maps")
 
-        val hotSeatAppList : ArrayList<AppObject> = ArrayList()
-        for (app in myAppsList){
-            if(hotSeatAppsName.contains(app.get_packageName())){
+        val hotSeatAppList: ArrayList<AppObject> = ArrayList()
+        for (app in myAppsList) {
+            if (hotSeatAppsName.contains(app.get_packageName())) {
                 hotSeatAppList.add(app)
             }
         }
