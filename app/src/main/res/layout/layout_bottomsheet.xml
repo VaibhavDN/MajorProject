@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:background="#CC000000"
         app:layout_constraintStart_toStartOf="parent"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">

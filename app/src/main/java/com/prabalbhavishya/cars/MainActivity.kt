@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         val myAppsList: ArrayList<AppObject> = fetchList.fetchList(this)
         val predApplist = App_Prediction().predict_app(this)
 
-        val gridLayoutManager = GridLayoutManager(this, 4)
+        val gridLayoutManager = GridLayoutManager(this, 5)
         val gridLayoutManager2 = GridLayoutManager(this, 5)
         recyclerView.layoutManager = gridLayoutManager
         //recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.HORIZONTAL))
