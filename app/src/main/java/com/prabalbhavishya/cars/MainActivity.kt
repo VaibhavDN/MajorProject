@@ -3,16 +3,16 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         val recyclerView = findViewById<RecyclerView>(R.id.appDrawer_RecyclerView)
         val recyclerViewHotSeat = findViewById<RecyclerView>(R.id.hotSeat_RecyclerView)
+        val drawerSearchBar = findViewById<LinearLayout>(R.id.drawerSearch_LinearLayout)
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("BottomSheet slideOffset: ", (slideOffset).toString())
                 //bottomSheet.setBackgroundColor(Color.argb((slideOffset * 255).toInt().coerceAtLeast(120), 255, 255, 255))
                 appDrawer_RecyclerView.alpha = slideOffset
+                drawerSearchBar.alpha = slideOffset
                 hotSeat_LinearView.alpha = 1 - slideOffset
                 homeScreen_LinearLayout2.alpha = 1 - slideOffset
                 homeScreen_LinearLayout3.alpha = 1 - slideOffset
@@ -90,14 +92,18 @@ class MainActivity : AppCompatActivity() {
 
                 if (slideOffset < 0.05) {
                     appDrawer_RecyclerView.visibility = View.GONE
+                    drawerSearchBar.visibility = View.GONE
                 } else {
                     appDrawer_RecyclerView.visibility = View.VISIBLE
+                    drawerSearchBar.visibility = View.VISIBLE
                 }
             }
         })
 
         val fetchList = FetchAppsList()
-        val myAppsList: ArrayList<AppObject> = fetchList.fetchList(this)
+        val myFullAppList: ArrayList<AppObject> = fetchList.fetchList(this)
+        var myAppsList: ArrayList<AppObject> = ArrayList()
+        myAppsList.addAll(myFullAppList)
         val predApplist = App_Prediction().predict_app(this)
 
         val gridLayoutManager = GridLayoutManager(this, 5)
@@ -110,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         //Prediction RecyclerView
         val predictionRecyclerView = findViewById<RecyclerView>(R.id.appPrediction_RecyclerView)
         //val linearLayoutManagerPredictionRecyclerView =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         predictionRecyclerView.layoutManager = gridLayoutManager2
         val predictionRecyclerViewAdapter = PredictionRecyclerViewAdapter(predApplist)
         predictionRecyclerView.adapter = predictionRecyclerViewAdapter
@@ -144,6 +150,27 @@ class MainActivity : AppCompatActivity() {
 //            val intentUsageStats = Intent(this, UsageStats::class.java)
 //            startActivity(intentUsageStats)
 //        }
+
+        val drawerSearchEditText = findViewById<EditText>(R.id.drawerSearch_EditText)
+        drawerSearchEditText.addTextChangedListener {
+            val searchText = drawerSearchEditText.text.toString().trim()
+            Toast.makeText(applicationContext, searchText, Toast.LENGTH_SHORT).show()
+            Log.d("TextWatcher: ", searchText)
+
+            if (searchText == "") {
+                myAppsList.addAll(myFullAppList)
+            }
+            else {
+                myAppsList.clear()
+                for (app in myFullAppList) {
+                    Log.d("app: ", app.get_appName())
+                    if (app.get_appName().contains(searchText, true)) {
+                        myAppsList.add(app)
+                    }
+                }
+            }
+            recyclerViewAdapter.notifyDataSetChanged()
+        }
     }
 
     class PredictionRecyclerViewAdapter(private var predictedAppsList: ArrayList<AppObject>) :

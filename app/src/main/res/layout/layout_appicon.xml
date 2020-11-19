@@ -14,7 +14,7 @@
         android:layout_width="42sp"
         android:layout_height="42sp"
         android:src="@mipmap/ic_launcher"
-        android:layout_margin="5sp"
+        android:layout_margin="4sp"
         app:layout_constraintBottom_toTopOf="@id/appIcon_TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

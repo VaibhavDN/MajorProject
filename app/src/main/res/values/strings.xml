@@ -4,4 +4,5 @@
     <string name="showusagestats">showUsageStats</string>
     <string name="search">Search</string>
     <string name="usage_stats">Usage Stats:</string>
+    <string name="drawer_arrow">drawerArrow</string>
 </resources>
