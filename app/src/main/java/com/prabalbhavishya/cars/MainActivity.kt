@@ -3,8 +3,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +18,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_bottomsheet.*
 import java.util.concurrent.TimeUnit
@@ -29,11 +28,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val googleButton = findViewById<Button>(R.id.search_btn)
-        googleButton.setOnClickListener {
-            Log.println(Log.VERBOSE, "Google icon clicked", "yes")
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")))
-        }
+        val googleButton = findViewById<MaterialCardView>(R.id.material_google_btn)
+        googleButton.setOnClickListener(View.OnClickListener { view ->
+            when (view.id) {
+                R.id.material_google_btn -> GoogleSearchLaunch()
+            }
+        })
+//        googleButton.setOnClickListener()
+//        googleButton.setOnClickListener {
+//            Log.println(Log.VERBOSE, "Google icon clicked", "yes")
+//            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")))
+//        }
 
         val bottomSheet = findViewById<ConstraintLayout>(R.id.layoutBottomSheet)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
@@ -171,6 +176,10 @@ class MainActivity : AppCompatActivity() {
             }
             recyclerViewAdapter.notifyDataSetChanged()
         }
+    }
+
+    private fun GoogleSearchLaunch() {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")))
     }
 
     class PredictionRecyclerViewAdapter(private var predictedAppsList: ArrayList<AppObject>) :

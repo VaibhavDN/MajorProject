@@ -20,8 +20,9 @@
         android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/material_google_btn"
             android:layout_width="0sp"
-            android:layout_height="wrap_content"
+            android:layout_height="50sp"
             android:layout_weight="5"
             android:layout_marginTop="10sp"
             android:layout_marginBottom="2sp"
@@ -29,17 +30,26 @@
             android:layout_marginStart="15sp"
             android:padding="10sp"
             android:layout_gravity="center"
-            android:theme="@style/Theme.MaterialComponents.Light"
+            android:clickable="true"
             app:cardElevation="8sp"
+            android:theme="@style/Theme.MaterialComponents"
             app:cardCornerRadius="15sp">
 
-            <Button
-                android:id="@+id/search_btn"
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/cardview_dark_background"
-                android:textAlignment="center" />
+                android:layout_gravity="left"
+                android:src="@drawable/google_srch" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:src="@drawable/searchico2" />
+
+
         </com.google.android.material.card.MaterialCardView>
+
 
         <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
         <!--            android:id="@+id/homeScreen_FAB"-->
