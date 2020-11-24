@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:id="@+id/homeScreen_coordinatorLayout"
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/homeScreen_coordinatorLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,8 +9,8 @@
     android:orientation="vertical"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:fitsSystemWindows="true"
-    android:background="@drawable/dblue">
+    android:fitsSystemWindows="true">
+    <!--    android:background="@drawable/dblue">-->
 
     <LinearLayout
         android:id="@+id/homeScreen_LinearLayout2"
@@ -39,13 +38,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:src="@drawable/google_srch" />
+                android:src="@drawable/ic_icons8_google" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:src="@drawable/searchico2" />
+                android:src="@drawable/ic_baseline_search_24" />
 
 
         </com.google.android.material.card.MaterialCardView>
@@ -92,11 +91,17 @@
         app:layout_anchor="@id/homeScreen_LinearLayout1"
         app:layout_anchorGravity="bottom"
         android:layout_gravity="bottom">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/appPrediction_RecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="vertical"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/appPrediction_RecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <include layout="@layout/layout_bottomsheet" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

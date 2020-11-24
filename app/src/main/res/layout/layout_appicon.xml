@@ -25,12 +25,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/_app_name"
-        android:maxLines="1"
+        android:maxLines="2"
         android:ellipsize="end"
         android:textColor="@color/White"
-        android:textScaleX="0.8"
+        android:textScaleX="0.9"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/appIcon_ImageView"
         app:layout_constraintStart_toStartOf="@id/appIcon_ImageView"
         app:layout_constraintEnd_toEndOf="@id/appIcon_ImageView" />
 
