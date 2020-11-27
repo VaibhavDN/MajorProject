@@ -19,11 +19,11 @@ jobs:
         java-version: 1.8
     - name: Build with Gradle
       run: |
-           cd "CAGE Launcher"
+           cd "CARS Launcher"
            chmod +x gradlew
            ./gradlew build
     - name: Upload APK
       uses: actions/upload-artifact@v2
       with:
         name: app
-        path: "CAGE Launcher/app/build/outputs/apk/debug/app-debug.apk"
+        path: "CARS Launcher/app/build/outputs/apk/debug/app-debug.apk"
