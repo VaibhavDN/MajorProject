@@ -33,13 +33,31 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Apps that you can remove"
-                    android:textAlignment="center"
-                    android:textColor="@color/design_default_color_background"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_delete_forever_24" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="Apps that you can remove"
+                        android:textColor="@color/design_default_color_background"
+                        android:textSize="21sp" />
+
+                    <ImageView
+                        android:id="@+id/refresh_removeapplist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_refresh_24" />
+                </LinearLayout>
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/removeapps"

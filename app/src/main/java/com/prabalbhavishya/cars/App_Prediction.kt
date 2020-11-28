@@ -46,15 +46,14 @@ class App_Prediction {
             }
         }
         if (OldUserAppName.size > 5) {
-            val rnd = Random()
-            val rndints = IntArray(5) { rnd.nextInt(OldUserAppName.size) }
+            var i = 0
             val appsReturned = ArrayList<AppObject>()
-            for (i in rndints) {
-                appsReturned.add(appsFetched[i])
+            while (i < 5) {
+                appsReturned.add(OldUserAppName[i])
+                i++
             }
             return appsReturned
         }
-
         return OldUserAppName
     }
 }

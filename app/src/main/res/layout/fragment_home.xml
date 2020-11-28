@@ -12,6 +12,7 @@
     tools:context=".MainActivity">
     <!--    android:background="@drawable/dblue">-->
 
+
     <LinearLayout
         android:id="@+id/homeScreen_LinearLayout2"
         android:layout_width="match_parent"
@@ -65,10 +66,13 @@
         <!--            android:src="@mipmap/ic_launcher"/>-->
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/homeScreen_LinearLayout1"
+        app:layout_anchor="@id/homeScreen_LinearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_anchorGravity="bottom"
         android:orientation="vertical">
 
         <androidx.viewpager.widget.ViewPager

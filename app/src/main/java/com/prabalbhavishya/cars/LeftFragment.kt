@@ -31,11 +31,17 @@ class LeftFragment : Fragment() {
 //        startActivity(intent)
 
         val removerecview = view.findViewById<RecyclerView>(R.id.removeapps)
-        val predApplist = App_Prediction().RemoveAppList(context!!)
-        val removeappadap = RemoveAppListAdapter(predApplist)
+        var predApplist = App_Prediction().RemoveAppList(context!!)
+        var removeappadap = RemoveAppListAdapter(predApplist)
         val grid = GridLayoutManager(context, 5)
         removerecview.layoutManager = grid
         removerecview.adapter = removeappadap
+        val refresh_removeapp_list = view.findViewById<ImageView>(R.id.refresh_removeapplist)
+        refresh_removeapp_list.setOnClickListener {
+            predApplist = App_Prediction().RemoveAppList(context!!)
+            removeappadap = RemoveAppListAdapter(predApplist)
+            removerecview.adapter = removeappadap
+        }
         return view
     }
 
@@ -57,9 +63,9 @@ class LeftFragment : Fragment() {
 
             holder.appIconConstraintLayout.setOnClickListener {
                 val intent = Intent(Intent.ACTION_DELETE)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.data = Uri.parse("package:" + RemoveApplist[position].get_packageName())
-                holder.context.applicationContext.startActivity(intent)
+                holder.context.startActivity(intent)
                 RemoveApplist.removeAt(position)
                 notifyItemRemoved(position)
                 notifyDataSetChanged()
