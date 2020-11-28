@@ -21,7 +21,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_bottomsheet.*
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 
 /**
@@ -41,11 +45,6 @@ class HomeFragment : Fragment() {
                 R.id.material_google_btn -> GoogleSearchLaunch()
             }
         })
-//        googleButton.setOnClickListener()
-//        googleButton.setOnClickListener {
-//            Log.println(Log.VERBOSE, "Google icon clicked", "yes")
-//            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")))
-//        }
 
         val bottomSheet = view.findViewById<ConstraintLayout>(R.id.layoutBottomSheet)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
@@ -88,11 +87,12 @@ class HomeFragment : Fragment() {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                Log.d("BottomSheet slideOffset: ", (slideOffset).toString())
+                //Log.d("BottomSheet slideOffset: ", (slideOffset).toString())
                 //bottomSheet.setBackgroundColor(Color.argb((slideOffset * 255).toInt().coerceAtLeast(120), 255, 255, 255))
                 appDrawer_RecyclerView.alpha = slideOffset
                 drawerSearchBar.alpha = slideOffset
                 hotSeat_LinearView.alpha = 1 - slideOffset
+                homeScreen_LinearLayout1.alpha = 1 - slideOffset
                 homeScreen_LinearLayout2.alpha = 1 - slideOffset
                 homeScreen_LinearLayout3.alpha = 1 - slideOffset
 

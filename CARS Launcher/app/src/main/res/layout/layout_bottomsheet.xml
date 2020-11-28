@@ -57,19 +57,20 @@
             android:layout_marginStart="15sp"
             android:padding="10sp"
             android:layout_gravity="center"
-            android:theme="@style/Theme.MaterialComponents.Light"
+            android:theme="@style/Theme.MaterialComponents"
             app:cardElevation="8sp"
             app:cardCornerRadius="15sp">
 
             <EditText
                 android:id="@+id/drawerSearch_EditText"
                 android:layout_width="match_parent"
-                android:layout_height="25sp"
-                android:background="@color/cardview_dark_background"
+                android:layout_height="45sp"
+                android:theme="@style/Theme.MaterialComponents"
                 android:textColor="@color/White"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:autofillHints="Search"
                 android:inputType="text"
+                android:layout_marginHorizontal="10sp"
                 android:maxLines="1"
                 tools:ignore="LabelFor" />
         </com.google.android.material.card.MaterialCardView>
@@ -81,8 +82,8 @@
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
         android:alpha="0"
-        android:layout_marginTop="40sp"
-        android:paddingBottom="25sp"
+        android:layout_marginTop="60sp"
+        android:paddingBottom="60sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 

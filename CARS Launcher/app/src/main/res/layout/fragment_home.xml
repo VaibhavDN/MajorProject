@@ -10,7 +10,6 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     tools:context=".MainActivity">
-    <!--    android:background="@drawable/dblue">-->
 
 
     <LinearLayout
@@ -49,21 +48,6 @@
 
 
         </com.google.android.material.card.MaterialCardView>
-
-
-        <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-        <!--            android:id="@+id/homeScreen_FAB"-->
-        <!--            android:layout_width="0sp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            android:layout_marginTop="20sp"-->
-        <!--            android:layout_marginEnd="15sp"-->
-        <!--            android:layout_marginBottom="20sp"-->
-        <!--            android:layout_marginStart="10sp"-->
-        <!--            android:padding="20sp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:contentDescription="@string/showusagestats"-->
-        <!--            android:src="@mipmap/ic_launcher"/>-->
     </LinearLayout>
 
 
@@ -73,14 +57,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_anchorGravity="bottom"
+        android:layout_margin="20sp"
         android:orientation="vertical">
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/homeScreen_ViewPager"
+        <TextClock
+            android:id="@+id/textView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:gravity="center"
+            android:textColor="@color/White"
+            android:textSize="28sp"
+            android:format12Hour="hh:mm a" />
 
-        </androidx.viewpager.widget.ViewPager>
+        <TextClock
+            android:id="@+id/textDateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/White"
+            android:textSize="24sp"
+            android:format12Hour="E MMM dd"
+            android:format24Hour="@null" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/homeScreen_LinearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/homeScreen_LinearLayout1"
+        app:layout_anchorGravity="bottom">
+
+        <androidx.viewpager.widget.ViewPager
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -93,7 +105,7 @@
         android:layout_marginEnd="10sp"
         android:layout_marginBottom="95sp"
         android:orientation="vertical"
-        app:layout_anchor="@id/homeScreen_LinearLayout1"
+        app:layout_anchor="@id/homeScreen_LinearLayout4"
         app:layout_anchorGravity="bottom">
 
         <androidx.recyclerview.widget.RecyclerView

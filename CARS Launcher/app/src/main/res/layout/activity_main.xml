@@ -9,100 +9,11 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:fitsSystemWindows="true">
-    <!--    android:background="@drawable/dblue">-->
 
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/homeScreen_LinearLayout2"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:orientation="horizontal">-->
-
-    <!--        <com.google.android.material.card.MaterialCardView-->
-    <!--            android:id="@+id/material_google_btn"-->
-    <!--            android:layout_width="0sp"-->
-    <!--            android:layout_height="50sp"-->
-    <!--            android:layout_weight="5"-->
-    <!--            android:layout_marginTop="10sp"-->
-    <!--            android:layout_marginBottom="2sp"-->
-    <!--            android:layout_marginEnd="15sp"-->
-    <!--            android:layout_marginStart="15sp"-->
-    <!--            android:padding="10sp"-->
-    <!--            android:layout_gravity="center"-->
-    <!--            android:clickable="true"-->
-    <!--            app:cardElevation="8sp"-->
-    <!--            android:theme="@style/Theme.MaterialComponents"-->
-    <!--            app:cardCornerRadius="15sp">-->
-
-    <!--            <ImageView-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_gravity="left"-->
-    <!--                android:src="@drawable/ic_icons8_google" />-->
-
-    <!--            <ImageView-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_gravity="right"-->
-    <!--                android:src="@drawable/ic_baseline_search_24" />-->
-
-
-    <!--        </com.google.android.material.card.MaterialCardView>-->
-
-
-    <!--        &lt;!&ndash;        <com.google.android.material.floatingactionbutton.FloatingActionButton&ndash;&gt;-->
-    <!--        &lt;!&ndash;            android:id="@+id/homeScreen_FAB"&ndash;&gt;-->
-    <!--        &lt;!&ndash;            android:layout_width="0sp"&ndash;&gt;-->
-    <!--        &lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
-    <!--        &lt;!&ndash;            android:layout_gravity="center"&ndash;&gt;-->
-    <!--        &lt;!&ndash;            android:layout_marginTop="20sp"&ndash;&gt;-->
-    <!--        &lt;!&ndash;            android:layout_marginEnd="15sp"&ndash;&gt;-->
-    <!--        &lt;!&ndash;            android:layout_marginBottom="20sp"&ndash;&gt;-->
-    <!--        &lt;!&ndash;            android:layout_marginStart="10sp"&ndash;&gt;-->
-    <!--        &lt;!&ndash;            android:padding="20sp"&ndash;&gt;-->
-    <!--        &lt;!&ndash;            android:layout_weight="1"&ndash;&gt;-->
-    <!--        &lt;!&ndash;            android:contentDescription="@string/showusagestats"&ndash;&gt;-->
-    <!--        &lt;!&ndash;            android:src="@mipmap/ic_launcher"/>&ndash;&gt;-->
-    <!--    </LinearLayout>-->
-
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/homeScreen_LinearLayout1"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:orientation="vertical">-->
-
-    <!--        <androidx.viewpager.widget.ViewPager-->
-    <!--            android:id="@+id/homeScreen_ViewPager"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content">-->
-
-    <!--        </androidx.viewpager.widget.ViewPager>-->
-    <!--    </LinearLayout>-->
-
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/homeScreen_LinearLayout3"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="10sp"-->
-    <!--        android:layout_marginEnd="10sp"-->
-    <!--        android:layout_marginTop="10sp"-->
-    <!--        android:layout_marginBottom="95sp"-->
-    <!--        android:orientation="vertical"-->
-    <!--        app:layout_anchor="@id/homeScreen_LinearLayout1"-->
-    <!--        app:layout_anchorGravity="bottom"-->
-    <!--        android:layout_gravity="bottom">-->
-
-    <!--        <androidx.recyclerview.widget.RecyclerView-->
-    <!--            android:id="@+id/appPrediction_RecyclerView"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:scrollbars="vertical" />-->
-    <!--    </LinearLayout>-->
-
-
-    <!--    <include layout="@layout/layout_bottomsheet" />-->
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/home_screen_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
