@@ -7,6 +7,7 @@
     android:layout_gravity="center_horizontal"
     android:layout_margin="5sp"
     android:padding="1sp"
+    android:theme="@style/Theme.MaterialComponents"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
@@ -22,10 +23,11 @@
 
     <TextView
         android:id="@+id/appIcon_TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:textSize="15sp"
         android:text="@string/_app_name"
-        android:maxLines="2"
+        android:maxLines="1"
         android:ellipsize="end"
         android:textColor="@color/White"
         android:textScaleX="0.9"

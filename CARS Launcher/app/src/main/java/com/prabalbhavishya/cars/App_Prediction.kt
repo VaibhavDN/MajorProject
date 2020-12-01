@@ -33,11 +33,11 @@ class App_Prediction {
             val comp: Long = 0
             if (i.totalTimeInForeground.equals(comp)) {
                 OldAppName.add(i.packageName)
-                Log.println(
-                    Log.VERBOSE,
-                    "pkg name : ",
-                    i.packageName + " " + i.totalTimeInForeground
-                )
+//                Log.println(
+//                    Log.VERBOSE,
+//                    "pkg name : ",
+//                    i.packageName + " " + i.totalTimeInForeground
+//                )
             }
         }
         for (i in appsFetched) {

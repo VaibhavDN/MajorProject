@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         FragmentPagerAdapter(fm!!) {
         override fun getItem(position: Int): Fragment {
             when (position) {
+                2 -> return SettingsFragment() //Settings fragment at position 2
                 1 -> return HomeFragment() //Homefrag at position 0
                 0 -> return LeftFragment() //Leftfrag at position 1
             }
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getCount(): Int {
-            return 2 //three fragments
+            return 3 //three fragments
         }
     }
 }

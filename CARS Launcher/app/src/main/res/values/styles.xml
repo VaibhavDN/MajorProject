@@ -8,6 +8,7 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="preferenceTheme">@style/Theme.MaterialComponents</item>
     </style>
 
     <style name="Widget.AppTheme.ButtonBar.Fullscreen" parent="">

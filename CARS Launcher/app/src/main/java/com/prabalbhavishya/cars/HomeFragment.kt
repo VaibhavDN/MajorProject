@@ -1,8 +1,10 @@
 package com.prabalbhavishya.cars
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,8 +22,12 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.card.MaterialCardView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_bottomsheet.*
+import org.jsoup.Jsoup
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -45,6 +52,50 @@ class HomeFragment : Fragment() {
                 R.id.material_google_btn -> GoogleSearchLaunch()
             }
         })
+
+        val textw = view.findViewById<TextView>(R.id.textweather)
+        var tempString = "--"
+        var timeInterval : Long = 1
+
+        val prefs : SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+        val handler = Handler()
+        var runn = Runnable{}
+        runn = Runnable() {
+            kotlin.run {
+                Thread(Runnable {
+                    kotlin.run {
+                        handler.postDelayed(runn, timeInterval*1000)
+
+                        if(!prefs.getString("City Name", "c").toString().equals("c")) {
+                            val url = "https://api.openweathermap.org/data/2.5/weather?q="+ prefs.getString("City Name", "c").toString() + "&appid=58f0c9e655cd9d832a1a6d2863f2d2f3&units=metric"
+
+
+                            try {
+                                val doc = Jsoup.connect(url).ignoreContentType(true)
+                                //Log.println(Log.ASSERT, "Open", doc.execute().body().toString())
+                                val htmlJson = Gson()
+                                val mp : MutableMap<String, Any> = htmlJson.fromJson(doc.execute().body().toString(), object : TypeToken<MutableMap<String, Any>>() {}.type)
+                                mp["weather"] = mp["weather"].toString().removePrefix("[")
+                                mp["weather"] = mp["weather"].toString().removeSuffix("]")
+                                val weather : Map<String, Any> = htmlJson.fromJson(mp["weather"].toString(), object : TypeToken<Map<String, Any>>() {}.type)
+                                val temp : Map<String, Any> = htmlJson.fromJson(mp["main"].toString(), object : TypeToken<Map<String, Any>>() {}.type)
+                                //Log.println(Log.ASSERT, "Preferences work", weather["main"].toString() + " " + temp["temp"].toString())
+                                tempString = weather["main"].toString() + " | " + temp["temp"].toString() + "°C"
+                            }
+                            catch (e:Exception) {
+
+                            }
+                            timeInterval = 100
+
+                        }
+                    }
+
+                }).start()
+                textw.setText(tempString)
+            }
+        }
+        handler.postDelayed(runn, 1*1000)
 
         val bottomSheet = view.findViewById<ConstraintLayout>(R.id.layoutBottomSheet)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
@@ -113,13 +164,13 @@ class HomeFragment : Fragment() {
         })
 
         val fetchList = FetchAppsList()
-        val myFullAppList: ArrayList<AppObject> = fetchList.fetchList(context!!)
+        val myFullAppList: ArrayList<AppObject> = fetchList.fetchList(requireContext())
         var myAppsList: ArrayList<AppObject> = ArrayList()
         myAppsList.addAll(myFullAppList)
-        val predApplist = App_Prediction().predict_app(context!!)
+        val predApplist = App_Prediction().predict_app(requireContext())
 
-        val gridLayoutManager = GridLayoutManager(context!!, 5)
-        val gridLayoutManager2 = GridLayoutManager(context!!, 5)
+        val gridLayoutManager = GridLayoutManager(requireContext(), 5)
+        val gridLayoutManager2 = GridLayoutManager(requireContext(), 5)
         recyclerView.layoutManager = gridLayoutManager
         //recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.HORIZONTAL))
         val recyclerViewAdapter = RecyclerViewAdapter(myAppsList)
@@ -129,7 +180,7 @@ class HomeFragment : Fragment() {
         val predictionRecyclerView =
             view.findViewById<RecyclerView>(R.id.appPrediction_RecyclerView)
         //val linearLayoutManagerPredictionRecyclerView =
-        LinearLayoutManager(context!!, LinearLayoutManager.HORIZONTAL, false)
+        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         predictionRecyclerView.layoutManager = gridLayoutManager2
         val predictionRecyclerViewAdapter = PredictionRecyclerViewAdapter(predApplist)
         predictionRecyclerView.adapter = predictionRecyclerViewAdapter
@@ -150,7 +201,7 @@ class HomeFragment : Fragment() {
         }
         hotSeatAppList.reverse()
 
-        val gridLayoutManagerHotSeat = GridLayoutManager(context!!, 5)
+        val gridLayoutManagerHotSeat = GridLayoutManager(requireContext(), 5)
         recyclerViewHotSeat.layoutManager = gridLayoutManagerHotSeat
         recyclerViewHotSeat.isNestedScrollingEnabled = false
         //recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.HORIZONTAL))
@@ -167,7 +218,7 @@ class HomeFragment : Fragment() {
         val drawerSearchEditText = view.findViewById<EditText>(R.id.drawerSearch_EditText)
         drawerSearchEditText.addTextChangedListener {
             val searchText = drawerSearchEditText.text.toString().trim()
-            Toast.makeText(context!!, searchText, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), searchText, Toast.LENGTH_SHORT).show()
             Log.d("TextWatcher: ", searchText)
 
             if (searchText == "") {

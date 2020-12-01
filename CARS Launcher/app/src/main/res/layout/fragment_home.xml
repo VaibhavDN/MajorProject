@@ -8,8 +8,7 @@
     android:fitsSystemWindows="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -64,7 +63,7 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="70sp"
             android:gravity="center"
             android:textColor="@color/White"
             android:textSize="28sp"
@@ -77,8 +76,17 @@
             android:gravity="center"
             android:textColor="@color/White"
             android:textSize="24sp"
-            android:format12Hour="E MMM dd"
+            android:format12Hour="EEEE MMM dd"
             android:format24Hour="@null" />
+
+        <TextView
+            android:id="@+id/textweather"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="--"
+            android:textColor="@color/White"
+            android:textSize="20sp"/>
 
     </LinearLayout>
 
