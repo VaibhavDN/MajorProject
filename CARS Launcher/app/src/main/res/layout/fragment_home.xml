@@ -2,7 +2,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/homeScreen_coordinatorLayout"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -31,18 +30,21 @@
             android:padding="10sp"
             android:theme="@style/Theme.MaterialComponents"
             app:cardCornerRadius="15sp"
-            app:cardElevation="8sp">
+            app:cardElevation="8sp"
+            android:focusable="true">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
+                android:contentDescription="@string/google_icon"
                 android:src="@drawable/ic_icons8_google" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
+                android:contentDescription="@string/search_icon"
                 android:src="@drawable/ic_baseline_search_24" />
 
 
