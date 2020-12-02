@@ -1,10 +1,12 @@
 package com.prabalbhavishya.cars
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -27,6 +29,12 @@ class LeftFragment : Fragment() {
 
 //        val intent = Intent(ACTION_USAGE_ACCESS_SETTINGS)
 //        startActivity(intent)
+
+        val usageStatsButton = view.findViewById<Button>(R.id.showUsageStatsButton)
+        usageStatsButton.setOnClickListener{
+            val intent = Intent(context, UsageStats::class.java)
+            startActivity(intent)
+        }
 
         val removerecview = view.findViewById<RecyclerView>(R.id.removeapps)
         var predApplist = App_Prediction().RemoveAppList(requireContext())

@@ -2,16 +2,20 @@ package com.prabalbhavishya.cars
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ShortcutInfo
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.system.Os
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -368,16 +372,27 @@ class HomeFragment : Fragment() {
 
             holder.appIconConstraintLayout.setOnLongClickListener{
                 //Toast.makeText(holder.context, "Long press", Toast.LENGTH_SHORT).show()
+                val appUtility = AppUtility(holder.context)
                 val popup = PopupMenu(holder.context, holder.appIconConstraintLayout)
-                popup.menuInflater.inflate(R.menu.menu_drawer_app_popup, popup.menu)
+                val menuDrawerAppPopup = R.menu.menu_drawer_app_popup
+                popup.menuInflater.inflate(menuDrawerAppPopup, popup.menu)
+
+                val packageName = myAppsList[position].get_packageName()
+                var shortcuts : MutableList<ShortcutInfo>? = ArrayList()
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    shortcuts = appUtility.getAppShortcuts(packageName)
+                    if(shortcuts!!.size > 0){
+                        for(shortcut in shortcuts)
+                            popup.menu.add(shortcut.shortLabel.toString())
+                    }
+                }
                 popup.setOnMenuItemClickListener {
-                    val appUtility = AppUtility(holder.context)
-                    val packageName = myAppsList[position].get_packageName()
                     when(it.title){
                         "App Info" -> appUtility.getAppInfo(packageName)
                         "Uninstall" -> appUtility.uninstall(packageName)
                         else -> Toast.makeText(holder.context, it.title, Toast.LENGTH_SHORT).show()
                     }
+
                     return@setOnMenuItemClickListener true
                 }
                 popup.show()

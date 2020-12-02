@@ -31,5 +31,9 @@
     <string name="search_icon">SearchIcon</string>
     <string name="app_info">App Info</string>
     <string name="uninstall">Uninstall</string>
+    <string name="city_name">City Name</string>
+    <string name="show_usage_stats">Show usage stats</string>
+    <string name="apps_that_you_can_remove">Apps that you can remove</string>
+    <string name="refresh">refresh</string>
 
 </resources>
