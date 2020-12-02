@@ -1,8 +1,6 @@
 package com.prabalbhavishya.cars
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -62,10 +60,14 @@ class LeftFragment : Fragment() {
             holder.appIconImageView.setImageDrawable(RemoveApplist[position].get_appIcon())
 
             holder.appIconConstraintLayout.setOnClickListener {
-                val intent = Intent(Intent.ACTION_DELETE)
+                val appUtility = AppUtility(holder.context)
+                appUtility.uninstall(RemoveApplist[position].get_packageName())
+
+                //val intent = Intent(Intent.ACTION_DELETE)
                 //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent.data = Uri.parse("package:" + RemoveApplist[position].get_packageName())
-                holder.context.startActivity(intent)
+                //intent.data = Uri.parse("package:" + RemoveApplist[position].get_packageName())
+                //holder.context.startActivity(intent)
+
                 RemoveApplist.removeAt(position)
                 notifyItemRemoved(position)
                 notifyDataSetChanged()

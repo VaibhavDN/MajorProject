@@ -29,5 +29,7 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="google_icon">GoogleIcon</string>
     <string name="search_icon">SearchIcon</string>
+    <string name="app_info">App Info</string>
+    <string name="uninstall">Uninstall</string>
 
 </resources>
