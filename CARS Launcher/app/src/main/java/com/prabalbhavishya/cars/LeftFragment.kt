@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,9 +23,9 @@ import androidx.recyclerview.widget.RecyclerView
 class LeftFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_left, container, false)
 
@@ -31,7 +33,7 @@ class LeftFragment : Fragment() {
 //        startActivity(intent)
 
         val usageStatsButton = view.findViewById<Button>(R.id.showUsageStatsButton)
-        usageStatsButton.setOnClickListener{
+        usageStatsButton.setOnClickListener {
             val intent = Intent(context, UsageStats::class.java)
             startActivity(intent)
         }
@@ -52,11 +54,11 @@ class LeftFragment : Fragment() {
     }
 
     class RemoveAppListAdapter(private var RemoveApplist: ArrayList<AppObject>) :
-        RecyclerView.Adapter<RemoveAppListAdapter.ViewHolder>() {
+            RecyclerView.Adapter<RemoveAppListAdapter.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
                 ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.layout_predicted_appicon, parent, false)
+                    .inflate(R.layout.layout_predicted_appicon, parent, false)
             return ViewHolder(view)
         }
 
@@ -69,23 +71,47 @@ class LeftFragment : Fragment() {
 
             holder.appIconConstraintLayout.setOnClickListener {
                 val appUtility = AppUtility(holder.context)
-                appUtility.uninstall(RemoveApplist[position].get_packageName())
+                val popup = PopupMenu(holder.context, holder.appIconConstraintLayout)
+                val menuDrawerAppPopup = R.menu.menu_drawer_app_popup
+                popup.menuInflater.inflate(menuDrawerAppPopup, popup.menu)
+
+                val packageName = RemoveApplist[position].get_packageName()
+
+                popup.menu.add(0, 0, 0, "Launch")
+                popup.setOnMenuItemClickListener {
+                    when (it.title) {
+                        "App Info" -> appUtility.getAppInfo(packageName)
+                        "Uninstall" -> {
+                            appUtility.uninstall(packageName)
+                            RemoveApplist.removeAt(position)
+                            notifyItemRemoved(position)
+                            notifyDataSetChanged()
+                        }
+                        "Launch" -> {
+                            val appLaunchIntent = holder.context.packageManager.getLaunchIntentForPackage(packageName)
+                            if (appLaunchIntent != null) {
+                                holder.context.startActivity(appLaunchIntent)
+                            }
+                        }
+                        else -> Toast.makeText(holder.context, it.title, Toast.LENGTH_SHORT).show()
+                    }
+
+                    return@setOnMenuItemClickListener true
+                }
+                popup.show()
 
                 //val intent = Intent(Intent.ACTION_DELETE)
                 //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 //intent.data = Uri.parse("package:" + RemoveApplist[position].get_packageName())
                 //holder.context.startActivity(intent)
 
-                RemoveApplist.removeAt(position)
-                notifyItemRemoved(position)
-                notifyDataSetChanged()
             }
         }
 
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val context: Context = itemView.context
             var appIconConstraintLayout: ConstraintLayout =
-                itemView.findViewById(R.id.layoutConstraint_appIcon)
+                    itemView.findViewById(R.id.layoutConstraint_appIcon)
             var appIconImageView: ImageView = itemView.findViewById(R.id.appIcon_ImageView)
         }
     }

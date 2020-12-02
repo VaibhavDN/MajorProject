@@ -1,79 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:behavior_hideable="false"
-    app:behavior_peekHeight="90sp"
     android:layout_gravity="center_horizontal"
     android:background="#78000000"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="90sp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <LinearLayout
         android:id="@+id/hotSeat_LinearView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:layout_marginTop="5sp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="20sp"
-            android:src="@drawable/sarr1"
             android:layout_gravity="center"
-            android:contentDescription="@string/drawer_arrow" />
+            android:contentDescription="@string/drawer_arrow"
+            android:src="@drawable/sarr1" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/hotSeat_RecyclerView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="2sp"
             android:layout_gravity="center_horizontal"
-            android:alpha="1" />
+            android:alpha="1"
+            android:paddingBottom="2sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/drawerSearch_LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:alpha="0"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="2sp"
-            android:layout_marginEnd="15sp"
-            android:layout_marginStart="15sp"
-            android:padding="10sp"
             android:layout_gravity="center"
+            android:layout_marginStart="15sp"
+            android:layout_marginTop="10sp"
+            android:layout_marginEnd="15sp"
+            android:layout_marginBottom="2sp"
+            android:layout_weight="5"
+            android:padding="10sp"
             android:theme="@style/Theme.MaterialComponents"
-            app:cardElevation="5sp"
-            app:cardCornerRadius="15sp">
+            app:cardCornerRadius="15sp"
+            app:cardElevation="5sp">
 
             <EditText
                 android:id="@+id/drawerSearch_EditText"
                 android:layout_width="match_parent"
                 android:layout_height="45sp"
-                android:theme="@style/Theme.MaterialComponents"
+                android:layout_marginHorizontal="10sp"
+                android:autofillHints="Search"
+                android:hint="@string/search"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textAlignment="textStart"
                 android:textColor="@color/White"
                 android:textColorHint="@color/White"
-                android:textAlignment="textStart"
-                android:hint="@string/search"
-                android:autofillHints="Search"
-                android:inputType="text"
-                android:layout_marginHorizontal="10sp"
-                android:maxLines="1"
+                android:theme="@style/Theme.MaterialComponents"
                 tools:ignore="LabelFor" />
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
@@ -82,11 +82,11 @@
         android:id="@+id/appDrawer_RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        android:alpha="0"
         android:layout_marginTop="60sp"
+        android:alpha="0"
         android:paddingBottom="60sp"
+        android:scrollbars="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

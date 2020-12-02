@@ -1,4 +1,5 @@
 package com.prabalbhavishya.cars
+
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -45,9 +46,9 @@ import kotlin.collections.HashSet
  */
 class HomeFragment : Fragment() {
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         val googleButton = view.findViewById<MaterialCardView>(R.id.material_google_btn)
@@ -59,12 +60,12 @@ class HomeFragment : Fragment() {
 
         val textw = view.findViewById<TextView>(R.id.textweather)
         var tempString = "--"
-        var timeInterval : Long = 1
+        var timeInterval: Long = 1
 
-        val prefs : SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         val handler = Handler(Looper.getMainLooper())
-        var runn = Runnable{}
+        var runn = Runnable {}
         runn = Runnable {
             kotlin.run {
                 Thread {
@@ -98,7 +99,7 @@ class HomeFragment : Fragment() {
                 textw.text = tempString
             }
         }
-        handler.postDelayed(runn, 1*1000)
+        handler.postDelayed(runn, 1 * 1000)
 
         val bottomSheet = view.findViewById<ConstraintLayout>(R.id.layoutBottomSheet)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
@@ -106,7 +107,7 @@ class HomeFragment : Fragment() {
         val recyclerViewHotSeat = view.findViewById<RecyclerView>(R.id.hotSeat_RecyclerView)
         val drawerSearchBar = view.findViewById<LinearLayout>(R.id.drawerSearch_LinearLayout)
         bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
+                BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
@@ -131,12 +132,12 @@ class HomeFragment : Fragment() {
                 //val periodicWorkRequest = OneTimeWorkRequestBuilder<GetAppUsageWorker>().build()
                 //WorkManager.getInstance(applicationContext).enqueue(periodicWorkRequest)
                 val periodicWorkRequest =
-                    PeriodicWorkRequestBuilder<GetAppUsageWorker>(15, TimeUnit.MINUTES).build()
+                        PeriodicWorkRequestBuilder<GetAppUsageWorker>(15, TimeUnit.MINUTES).build()
                 val workTag = "UsageWork"
                 WorkManager.getInstance(context!!).enqueueUniquePeriodicWork(
-                    workTag,
-                    ExistingPeriodicWorkPolicy.KEEP,
-                    periodicWorkRequest
+                        workTag,
+                        ExistingPeriodicWorkPolicy.KEEP,
+                        periodicWorkRequest
                 )
             }
 
@@ -181,7 +182,7 @@ class HomeFragment : Fragment() {
 
         //Prediction RecyclerView
         val predictionRecyclerView =
-            view.findViewById<RecyclerView>(R.id.appPrediction_RecyclerView)
+                view.findViewById<RecyclerView>(R.id.appPrediction_RecyclerView)
         //val linearLayoutManagerPredictionRecyclerView =
         LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         predictionRecyclerView.layoutManager = gridLayoutManager2
@@ -245,13 +246,13 @@ class HomeFragment : Fragment() {
     }
 
     class PredictionRecyclerViewAdapter(private var predictedAppsList: ArrayList<AppObject>) :
-        RecyclerView.Adapter<PredictionRecyclerViewAdapter.ViewHolder>() {
+            RecyclerView.Adapter<PredictionRecyclerViewAdapter.ViewHolder>() {
         override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
+                parent: ViewGroup,
+                viewType: Int
         ): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.layout_predicted_appicon, parent, false)
+                    .inflate(R.layout.layout_predicted_appicon, parent, false)
             return ViewHolder(view)
         }
 
@@ -264,12 +265,12 @@ class HomeFragment : Fragment() {
             //holder.appIconTextView.text = predictedAppsList[position].get_appName()
             holder.appIconConstraintLayout.setOnClickListener {
                 Toast.makeText(
-                    holder.context,
-                    predictedAppsList[position].get_packageName(),
-                    Toast.LENGTH_SHORT
+                        holder.context,
+                        predictedAppsList[position].get_packageName(),
+                        Toast.LENGTH_SHORT
                 ).show()
                 val appLaunchIntent = holder.context.packageManager.getLaunchIntentForPackage(
-                    predictedAppsList[position].get_packageName()
+                        predictedAppsList[position].get_packageName()
                 )
                 if (appLaunchIntent != null) {
                     holder.context.applicationContext.startActivity(appLaunchIntent)
@@ -284,7 +285,7 @@ class HomeFragment : Fragment() {
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val context: Context = itemView.context
             var appIconConstraintLayout: ConstraintLayout =
-                itemView.findViewById(R.id.layoutConstraint_appIcon)
+                    itemView.findViewById(R.id.layoutConstraint_appIcon)
 
             //var appIconTextView: TextView = itemView.findViewById(R.id.appIcon_TextView)
             var appIconImageView: ImageView = itemView.findViewById(R.id.appIcon_ImageView)
@@ -292,13 +293,13 @@ class HomeFragment : Fragment() {
     }
 
     class HotSeatRecyclerViewAdapter(private var myAppsList: ArrayList<AppObject>) :
-        RecyclerView.Adapter<HotSeatRecyclerViewAdapter.ViewHolder>() {
+            RecyclerView.Adapter<HotSeatRecyclerViewAdapter.ViewHolder>() {
         override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
+                parent: ViewGroup,
+                viewType: Int
         ): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.layout_predicted_appicon, parent, false)
+                    .inflate(R.layout.layout_predicted_appicon, parent, false)
             return ViewHolder(view)
         }
 
@@ -308,12 +309,12 @@ class HomeFragment : Fragment() {
             //holder.appIconTextView.text = myAppsList[position].get_appName()
             holder.appIconConstraintLayout.setOnClickListener {
                 Toast.makeText(
-                    holder.context,
-                    myAppsList[position].get_packageName(),
-                    Toast.LENGTH_SHORT
+                        holder.context,
+                        myAppsList[position].get_packageName(),
+                        Toast.LENGTH_SHORT
                 ).show()
                 val appLaunchIntent = holder.context.packageManager.getLaunchIntentForPackage(
-                    myAppsList[position].get_packageName()
+                        myAppsList[position].get_packageName()
                 )
                 if (appLaunchIntent != null) {
                     holder.context.applicationContext.startActivity(appLaunchIntent)
@@ -328,7 +329,7 @@ class HomeFragment : Fragment() {
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val context: Context = itemView.context
             var appIconConstraintLayout: ConstraintLayout =
-                itemView.findViewById(R.id.layoutConstraint_appIcon)
+                    itemView.findViewById(R.id.layoutConstraint_appIcon)
 
             //var appIconTextView: TextView = itemView.findViewById(R.id.appIcon_TextView)
             var appIconImageView: ImageView = itemView.findViewById(R.id.appIcon_ImageView)
@@ -336,15 +337,15 @@ class HomeFragment : Fragment() {
     }
 
     class RecyclerViewAdapter(private var myAppsList: ArrayList<AppObject>) :
-        RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+            RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
         override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
+                parent: ViewGroup,
+                viewType: Int
         ): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(
-                R.layout.layout_appicon,
-                parent,
-                false
+                    R.layout.layout_appicon,
+                    parent,
+                    false
             )
             return ViewHolder(view)
         }
@@ -358,19 +359,19 @@ class HomeFragment : Fragment() {
             holder.appIconTextView.text = myAppsList[position].get_appName()
             holder.appIconConstraintLayout.setOnClickListener {
                 Toast.makeText(
-                    holder.context,
-                    myAppsList[position].get_packageName(),
-                    Toast.LENGTH_SHORT
+                        holder.context,
+                        myAppsList[position].get_packageName(),
+                        Toast.LENGTH_SHORT
                 ).show()
                 val appLaunchIntent = holder.context.packageManager.getLaunchIntentForPackage(
-                    myAppsList[position].get_packageName()
+                        myAppsList[position].get_packageName()
                 )
                 if (appLaunchIntent != null) {
                     holder.context.applicationContext.startActivity(appLaunchIntent)
                 }
             }
 
-            holder.appIconConstraintLayout.setOnLongClickListener{
+            holder.appIconConstraintLayout.setOnLongClickListener {
                 //Toast.makeText(holder.context, "Long press", Toast.LENGTH_SHORT).show()
                 val appUtility = AppUtility(holder.context)
                 val popup = PopupMenu(holder.context, holder.appIconConstraintLayout)
@@ -378,16 +379,16 @@ class HomeFragment : Fragment() {
                 popup.menuInflater.inflate(menuDrawerAppPopup, popup.menu)
 
                 val packageName = myAppsList[position].get_packageName()
-                var shortcuts : MutableList<ShortcutInfo>? = ArrayList()
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                var shortcuts: MutableList<ShortcutInfo>? = ArrayList()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     shortcuts = appUtility.getAppShortcuts(packageName)
-                    if(shortcuts!!.size > 0){
-                        for(shortcut in shortcuts)
+                    if (shortcuts!!.size > 0) {
+                        for (shortcut in shortcuts)
                             popup.menu.add(shortcut.shortLabel.toString())
                     }
                 }
                 popup.setOnMenuItemClickListener {
-                    when(it.title){
+                    when (it.title) {
                         "App Info" -> appUtility.getAppInfo(packageName)
                         "Uninstall" -> appUtility.uninstall(packageName)
                         else -> Toast.makeText(holder.context, it.title, Toast.LENGTH_SHORT).show()
@@ -407,7 +408,7 @@ class HomeFragment : Fragment() {
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val context: Context = itemView.context
             var appIconConstraintLayout: ConstraintLayout =
-                itemView.findViewById(R.id.layoutConstraint_appIcon)
+                    itemView.findViewById(R.id.layoutConstraint_appIcon)
             var appIconTextView: TextView = itemView.findViewById(R.id.appIcon_TextView)
             var appIconImageView: ImageView = itemView.findViewById(R.id.appIcon_ImageView)
         }

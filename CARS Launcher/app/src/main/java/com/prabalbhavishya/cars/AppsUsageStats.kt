@@ -31,17 +31,15 @@ class UsageStats : AppCompatActivity() {
         try {
             val path = getExternalFilesDir("UsageDir")
             val file = File(path, "appUsageData.csv")
-            if(!file.isFile){
+            if (!file.isFile) {
                 throw Exception("File doesn't exist. Please wait for 15 minutes")
-            }
-            else{
+            } else {
                 val fileInputStream = FileInputStream(file)
                 textInFile = fileInputStream.readBytes().toString(Charset.defaultCharset())
                 fileInputStream.close()
                 Log.d("AppsUsageStats: ", "Read successful")
             }
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             textInFile = e.toString()
             Log.d("AppsUsageStats: ", "Read failed")
             requestPermissionFromUser()
@@ -49,7 +47,7 @@ class UsageStats : AppCompatActivity() {
         usageStatsTextView.text = textInFile
     }
 
-    private fun requestPermissionFromUser(){
+    private fun requestPermissionFromUser() {
         val appOps: AppOpsManager = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
@@ -67,16 +65,15 @@ class UsageStats : AppCompatActivity() {
     }
 
     override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
+            requestCode: Int,
+            resultCode: Int,
+            data: Intent?
     ) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == MY_USAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(applicationContext, "Permission Granted", Toast.LENGTH_SHORT).show()
-            }
-            else{
+            } else {
                 Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
             }
         }

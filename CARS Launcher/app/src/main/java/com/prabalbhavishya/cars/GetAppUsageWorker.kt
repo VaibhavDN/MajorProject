@@ -10,22 +10,22 @@ import androidx.work.WorkerParameters
 import java.io.File
 import java.io.FileOutputStream
 
-class GetAppUsageWorker(context: Context, workerParameters: WorkerParameters): Worker(context, workerParameters) {
-    class AppEventData{
+class GetAppUsageWorker(context: Context, workerParameters: WorkerParameters) : Worker(context, workerParameters) {
+    class AppEventData {
         var time = ""
         var date = ""
-        var timeInForeground:Long = 0
+        var timeInForeground: Long = 0
         var packageName = ""
     }
 
     override fun doWork(): Result {
         val usageStatsManager =
-            applicationContext.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+                applicationContext.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         Log.d("StartTime: ", (System.currentTimeMillis() - 1000 * 60 * 15).toString())
         Log.d("End Time: ", (System.currentTimeMillis() + 10000).toString())
         val usageEvents: UsageEvents = usageStatsManager.queryEvents(
-            System.currentTimeMillis() - 1000 * 60 * 15,
-            System.currentTimeMillis() + 10000
+                System.currentTimeMillis() - 1000 * 60 * 15,
+                System.currentTimeMillis() + 10000
         )
 
         //Toast.makeText(applicationContext, myAppsList.size.toString(), Toast.LENGTH_SHORT).show()
@@ -33,7 +33,7 @@ class GetAppUsageWorker(context: Context, workerParameters: WorkerParameters): W
         val allEvents: ArrayList<UsageEvents.Event> = ArrayList()
 
         //Get all events where an app was resumed or paused
-        while(usageEvents.hasNextEvent()) {
+        while (usageEvents.hasNextEvent()) {
             val currentEvent = UsageEvents.Event()
             usageEvents.getNextEvent(currentEvent)
             if (currentEvent.eventType == UsageEvents.Event.ACTIVITY_RESUMED || currentEvent.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
@@ -50,9 +50,9 @@ class GetAppUsageWorker(context: Context, workerParameters: WorkerParameters): W
         using the event time stamps
         */
         var textToSave = ""
-        for (itr in 0 until allEvents.size-1 step 1){
+        for (itr in 0 until allEvents.size - 1 step 1) {
             val event1: UsageEvents.Event = allEvents[itr]
-            val event2: UsageEvents.Event = allEvents[itr+1]
+            val event2: UsageEvents.Event = allEvents[itr + 1]
             Log.d("Event 1: ", event1.eventType.toString())
             Log.d("Event 2: ", event2.eventType.toString())
             Log.d("Event 1 PackageName: ", event1.packageName.toString())
@@ -62,12 +62,12 @@ class GetAppUsageWorker(context: Context, workerParameters: WorkerParameters): W
             Log.d("Event 1 Timestamp: ", event1.timeStamp.toString())
             Log.d("Event 2 Timestamp: ", event2.timeStamp.toString())
             Log.d("timeInForeground: ", (event2.timeStamp - event1.timeStamp).toString())
-            Log.d("timeInForeground in seconds: ", ((event2.timeStamp - event1.timeStamp)/1000).toString())
+            Log.d("timeInForeground in seconds: ", ((event2.timeStamp - event1.timeStamp) / 1000).toString())
 
-            if(event1.eventType == UsageEvents.Event.ACTIVITY_RESUMED && event2.eventType == UsageEvents.Event.ACTIVITY_PAUSED && event1.className == event2.className){
+            if (event1.eventType == UsageEvents.Event.ACTIVITY_RESUMED && event2.eventType == UsageEvents.Event.ACTIVITY_PAUSED && event1.className == event2.className) {
                 val time = DateUtils.formatDateTime(applicationContext, event1.timeStamp, DateUtils.FORMAT_SHOW_TIME)
                 val date = DateUtils.formatDateTime(applicationContext, event1.timeStamp, DateUtils.FORMAT_SHOW_DATE)
-                val timeInForeground:Long = (event2.timeStamp - event1.timeStamp)/1000
+                val timeInForeground: Long = (event2.timeStamp - event1.timeStamp) / 1000
 
                 hashMap[event1.packageName]!!.timeInForeground = hashMap[event1.packageName]!!.timeInForeground.plus(timeInForeground) //!! for not null
                 hashMap[event1.packageName]!!.time = time
@@ -82,8 +82,8 @@ class GetAppUsageWorker(context: Context, workerParameters: WorkerParameters): W
         */
         val fetchAppsList = FetchAppsList()
         val appList: ArrayList<AppObject> = fetchAppsList.fetchList(applicationContext)
-        for (itr in 0 until appList.size step 1){
-            if (hashMap[appList[itr].get_packageName()] != null){
+        for (itr in 0 until appList.size step 1) {
+            if (hashMap[appList[itr].get_packageName()] != null) {
                 val eventDataItem = hashMap[appList[itr].get_packageName()]
                 val time = eventDataItem!!.time
                 val date = eventDataItem.date

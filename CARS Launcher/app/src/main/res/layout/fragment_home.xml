@@ -27,11 +27,11 @@
             android:layout_marginBottom="2sp"
             android:layout_weight="5"
             android:clickable="true"
+            android:focusable="true"
             android:padding="10sp"
             android:theme="@style/Theme.MaterialComponents"
             app:cardCornerRadius="15sp"
-            app:cardElevation="8sp"
-            android:focusable="true">
+            app:cardElevation="8sp">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -54,35 +54,35 @@
 
     <LinearLayout
         android:id="@+id/homeScreen_LinearLayout1"
-        app:layout_anchor="@id/homeScreen_LinearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_anchorGravity="bottom"
-        android:layout_marginTop="40sp"
         android:layout_marginStart="20sp"
+        android:layout_marginTop="40sp"
         android:layout_marginEnd="20sp"
         android:layout_marginBottom="20sp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_anchor="@id/homeScreen_LinearLayout2"
+        app:layout_anchorGravity="bottom">
 
         <TextClock
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="70sp"
+            android:format12Hour="hh:mm a"
             android:gravity="center"
             android:textColor="@color/White"
-            android:textSize="28sp"
-            android:format12Hour="hh:mm a" />
+            android:textSize="28sp" />
 
         <TextClock
             android:id="@+id/textDateTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:format12Hour="EEEE MMM dd"
+            android:format24Hour="@null"
             android:gravity="center"
             android:textColor="@color/White"
-            android:textSize="24sp"
-            android:format12Hour="EEEE MMM dd"
-            android:format24Hour="@null" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/textweather"
@@ -91,7 +91,7 @@
             android:gravity="center"
             android:text="--"
             android:textColor="@color/White"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -104,7 +104,7 @@
 
         <androidx.viewpager.widget.ViewPager
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

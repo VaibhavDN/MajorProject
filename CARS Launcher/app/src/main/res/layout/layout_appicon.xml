@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layoutConstraint_appIcon"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:layout_margin="5sp"
     android:padding="1sp"
-    android:theme="@style/Theme.MaterialComponents"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:theme="@style/Theme.MaterialComponents">
 
     <ImageView
         android:id="@+id/appIcon_ImageView"
         android:layout_width="42sp"
         android:layout_height="42sp"
-        android:src="@mipmap/ic_launcher"
         android:layout_margin="4sp"
+        android:contentDescription="@string/_app_name"
+        android:src="@mipmap/ic_launcher"
         app:layout_constraintBottom_toTopOf="@id/appIcon_TextView"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/_app_name"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/appIcon_TextView"
         android:layout_width="wrap_content"
         android:layout_height="40sp"
-        android:textSize="15sp"
-        android:text="@string/_app_name"
-        android:maxLines="1"
         android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/_app_name"
+        android:textAlignment="center"
         android:textColor="@color/White"
         android:textScaleX="0.9"
-        android:textAlignment="center"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@id/appIcon_ImageView"
-        app:layout_constraintStart_toStartOf="@id/appIcon_ImageView"
-        app:layout_constraintEnd_toEndOf="@id/appIcon_ImageView" />
+        app:layout_constraintEnd_toEndOf="@id/appIcon_ImageView"
+        app:layout_constraintStart_toStartOf="@id/appIcon_ImageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
