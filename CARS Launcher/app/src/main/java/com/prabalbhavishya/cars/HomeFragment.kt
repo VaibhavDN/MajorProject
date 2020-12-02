@@ -106,10 +106,10 @@ class HomeFragment : Fragment() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        bottomSheet.setBackgroundColor(Color.argb(255, 255, 255, 255))
+                        bottomSheet.setBackgroundColor(Color.argb(200, 0, 0, 0))
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        bottomSheet.setBackgroundColor(Color.argb(120, 255, 255, 255))
+                        bottomSheet.setBackgroundColor(Color.argb(120, 0, 0, 0))
                     }
                     BottomSheetBehavior.STATE_DRAGGING -> {
                         //Skip
@@ -138,7 +138,7 @@ class HomeFragment : Fragment() {
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 //Log.d("BottomSheet slideOffset: ", (slideOffset).toString())
-                bottomSheet.setBackgroundColor(Color.argb((slideOffset * 255).toInt().coerceAtLeast(120), 255, 255, 255))
+                bottomSheet.setBackgroundColor(Color.argb((slideOffset * 200).toInt().coerceAtLeast(120), 0, 0, 0))
                 appDrawer_RecyclerView.alpha = slideOffset
                 drawerSearchBar.alpha = slideOffset
                 hotSeat_LinearView.alpha = 1 - slideOffset
