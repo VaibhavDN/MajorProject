@@ -2,7 +2,7 @@
     <string name="app_name">CARS</string>
     <string name="_app_name">App Name</string>
     <string name="showusagestats">showUsageStats</string>
-    <string name="search">Search</string>
+    <string name="search">Search…</string>
     <string name="usage_stats">Usage Stats:</string>
     <string name="drawer_arrow">drawerArrow</string>
     <string name="dummy_button">Dummy Button</string>

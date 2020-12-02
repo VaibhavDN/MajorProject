@@ -2,6 +2,7 @@ package com.prabalbhavishya.cars
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -28,8 +29,6 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_bottomsheet.*
 import org.jsoup.Jsoup
 import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
@@ -107,10 +106,10 @@ class HomeFragment : Fragment() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        //bottomSheet.setBackgroundColor(Color.argb(255, 255, 255, 255))
+                        bottomSheet.setBackgroundColor(Color.argb(255, 255, 255, 255))
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        //bottomSheet.setBackgroundColor(Color.argb(120, 255, 255, 255))
+                        bottomSheet.setBackgroundColor(Color.argb(120, 255, 255, 255))
                     }
                     BottomSheetBehavior.STATE_DRAGGING -> {
                         //Skip
@@ -139,7 +138,7 @@ class HomeFragment : Fragment() {
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 //Log.d("BottomSheet slideOffset: ", (slideOffset).toString())
-                //bottomSheet.setBackgroundColor(Color.argb((slideOffset * 255).toInt().coerceAtLeast(120), 255, 255, 255))
+                bottomSheet.setBackgroundColor(Color.argb((slideOffset * 255).toInt().coerceAtLeast(120), 255, 255, 255))
                 appDrawer_RecyclerView.alpha = slideOffset
                 drawerSearchBar.alpha = slideOffset
                 hotSeat_LinearView.alpha = 1 - slideOffset

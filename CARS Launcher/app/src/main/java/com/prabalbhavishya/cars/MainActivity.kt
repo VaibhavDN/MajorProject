@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION")
 package com.prabalbhavishya.cars
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -24,8 +25,8 @@ class MainActivity : AppCompatActivity() {
         mFlingDistance.set(viewpager, 30)
     }
 
-    class ViewPagerAdapter(fm: FragmentManager?) :
-        FragmentPagerAdapter(fm!!) {
+    class ViewPagerAdapter(fm: FragmentManager) :
+        FragmentPagerAdapter(fm) {
         override fun getItem(position: Int): Fragment {
             when (position) {
                 2 -> return SettingsFragment() //Settings fragment at position 2

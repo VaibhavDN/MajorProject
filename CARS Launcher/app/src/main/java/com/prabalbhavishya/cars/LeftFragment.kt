@@ -31,14 +31,14 @@ class LeftFragment : Fragment() {
 //        startActivity(intent)
 
         val removerecview = view.findViewById<RecyclerView>(R.id.removeapps)
-        var predApplist = App_Prediction().RemoveAppList(context!!)
+        var predApplist = App_Prediction().RemoveAppList(requireContext())
         var removeappadap = RemoveAppListAdapter(predApplist)
         val grid = GridLayoutManager(context, 5)
         removerecview.layoutManager = grid
         removerecview.adapter = removeappadap
         val refresh_removeapp_list = view.findViewById<ImageView>(R.id.refresh_removeapplist)
         refresh_removeapp_list.setOnClickListener {
-            predApplist = App_Prediction().RemoveAppList(context!!)
+            predApplist = App_Prediction().RemoveAppList(requireContext())
             removeappadap = RemoveAppListAdapter(predApplist)
             removerecview.adapter = removeappadap
         }

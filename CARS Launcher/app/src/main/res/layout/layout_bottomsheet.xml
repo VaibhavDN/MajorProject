@@ -8,7 +8,7 @@
     app:behavior_hideable="false"
     app:behavior_peekHeight="90sp"
     android:layout_gravity="center_horizontal"
-    android:background="@android:color/transparent"
+    android:background="#78FFFFFF"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -57,8 +57,8 @@
             android:layout_marginStart="15sp"
             android:padding="10sp"
             android:layout_gravity="center"
-            android:theme="@style/Theme.MaterialComponents"
-            app:cardElevation="8sp"
+            android:theme="@style/Theme.MaterialComponents.Light"
+            app:cardElevation="5sp"
             app:cardCornerRadius="15sp">
 
             <EditText
@@ -66,8 +66,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="45sp"
                 android:theme="@style/Theme.MaterialComponents"
-                android:textColor="@color/White"
+                android:textColor="@color/Black"
+                android:textColorHint="@color/Black"
                 android:textAlignment="textStart"
+                android:hint="@string/search"
                 android:autofillHints="Search"
                 android:inputType="text"
                 android:layout_marginHorizontal="10sp"
