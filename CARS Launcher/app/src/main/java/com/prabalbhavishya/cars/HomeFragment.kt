@@ -1,10 +1,13 @@
 package com.prabalbhavishya.cars
 
+import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ShortcutInfo
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,6 +21,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
@@ -101,6 +105,12 @@ class HomeFragment : Fragment() {
         }
         handler.postDelayed(runn, 1 * 1000)
 
+        var setblur = 1
+        val wallp = WallpaperManager.getInstance(context)
+        var wbmp = wallp.drawable.toBitmap()
+        wbmp = Bitmap.createScaledBitmap(wbmp, wbmp.height/512, wbmp.width/512, true)
+
+
         val bottomSheet = view.findViewById<ConstraintLayout>(R.id.layoutBottomSheet)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         val recyclerView = view.findViewById<RecyclerView>(R.id.appDrawer_RecyclerView)
@@ -111,10 +121,11 @@ class HomeFragment : Fragment() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        bottomSheet.setBackgroundColor(Color.argb(200, 0, 0, 0))
+                        //bottomSheet.setBackgroundColor(Color.argb(200, 0, 0, 0))
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        bottomSheet.setBackgroundColor(Color.argb(120, 0, 0, 0))
+                        //bottomSheet.setBackgroundColor(Color.argb(120, 0, 0, 0))
+                        setblur = 1
                     }
                     BottomSheetBehavior.STATE_DRAGGING -> {
                         //Skip
@@ -143,9 +154,14 @@ class HomeFragment : Fragment() {
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 //Log.d("BottomSheet slideOffset: ", (slideOffset).toString())
-                bottomSheet.setBackgroundColor(Color.argb((slideOffset * 200).toInt().coerceAtLeast(120), 0, 0, 0))
+                //bottomSheet.setBackgroundColor(Color.argb((slideOffset * 200).toInt().coerceAtLeast(120), 0, 0, 0))
+                if(setblur == 1) {
+                    bottomSheet.background = BitmapDrawable(resources, wbmp)
+                    setblur = 0
+                }
                 appDrawer_RecyclerView.alpha = slideOffset
                 drawerSearchBar.alpha = slideOffset
+                bottomSheet.background.alpha = (slideOffset * 255).toInt()
                 hotSeat_LinearView.alpha = 1 - slideOffset
                 homeScreen_LinearLayout1.alpha = 1 - slideOffset
                 homeScreen_LinearLayout2.alpha = 1 - slideOffset

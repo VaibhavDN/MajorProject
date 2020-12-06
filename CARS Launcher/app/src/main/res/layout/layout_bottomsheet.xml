@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:background="#78000000"
     app:behavior_hideable="false"
     app:behavior_peekHeight="90sp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
