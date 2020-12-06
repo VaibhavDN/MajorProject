@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.BatteryManager
 import android.os.Bundle
 import android.os.Handler
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -214,6 +215,8 @@ class LeftFragment : Fragment() {
         mpchart?.axisLeft?.textColor = Color.parseColor("#f3f0ff")
         mpchart?.description = desc
         mpchart?.invalidate()
+
+        Predictor().pred("")
 
     }
 

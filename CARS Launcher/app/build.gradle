@@ -48,5 +48,6 @@ dependencies {
     implementation("org.jsoup:jsoup:1.11.3")
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.13.0")
 
 }

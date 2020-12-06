@@ -106,10 +106,6 @@ class HomeFragment : Fragment() {
         handler.postDelayed(runn, 1 * 1000)
 
         var setblur = 1
-        val wallp = WallpaperManager.getInstance(context)
-        var wbmp = wallp.drawable.toBitmap()
-        wbmp = Bitmap.createScaledBitmap(wbmp, wbmp.height/512, wbmp.width/512, true)
-
 
         val bottomSheet = view.findViewById<ConstraintLayout>(R.id.layoutBottomSheet)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
@@ -156,6 +152,9 @@ class HomeFragment : Fragment() {
                 //Log.d("BottomSheet slideOffset: ", (slideOffset).toString())
                 //bottomSheet.setBackgroundColor(Color.argb((slideOffset * 200).toInt().coerceAtLeast(120), 0, 0, 0))
                 if(setblur == 1) {
+                    val wallp = WallpaperManager.getInstance(context)
+                    var wbmp = wallp.drawable.toBitmap()
+                    wbmp = Bitmap.createScaledBitmap(wbmp, wbmp.height/512, wbmp.width/512, true)
                     bottomSheet.background = BitmapDrawable(resources, wbmp)
                     setblur = 0
                 }
