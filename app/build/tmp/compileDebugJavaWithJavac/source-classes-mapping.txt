@@ -1,2 +1,0 @@
-com/prabalbhavishya/cars/BuildConfig.java
- com.prabalbhavishya.cars.BuildConfig
