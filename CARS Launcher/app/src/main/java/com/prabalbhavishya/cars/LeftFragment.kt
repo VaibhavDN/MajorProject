@@ -1,19 +1,28 @@
 package com.prabalbhavishya.cars
 
 import android.content.Context
+import android.content.Context.BATTERY_SERVICE
 import android.content.Intent
+import android.graphics.Color
+import android.os.BatteryManager
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.Toast
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.DefaultValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 
 
 /**
@@ -50,6 +59,74 @@ class LeftFragment : Fragment() {
             removeappadap = RemoveAppListAdapter(predApplist)
             removerecview.adapter = removeappadap
         }
+
+        val Tdb = TinyDB(context)
+        if(Tdb.getListDouble("battdata").size == 0) {
+            val bm = context?.getSystemService(BATTERY_SERVICE) as BatteryManager
+            val batman:Int = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+            //Log.println(Log.ASSERT, "perc", batman.toString())
+            val battdata = ArrayList<Double>()
+            val batdiffdata = ArrayList<Double>()
+            for(i in 0..14) {
+                battdata.add(batman.toDouble())
+            }
+            for(i in 0..14) {
+                batdiffdata.add(0.toDouble())
+            }
+            Tdb.putListDouble("battdata", battdata)
+            Tdb.putListDouble("battdiffdata", batdiffdata)
+        }
+
+        val handle = Handler()
+        var runn2 = Runnable { kotlin.run {  } }
+        runn2 = Runnable {
+            kotlin.run {
+                handle.postDelayed(runn2, 480 * 1000)
+                val Tdb = TinyDB(context)
+                val arr1 = Tdb.getListDouble("battdata")
+                val arr2 = Tdb.getListDouble("battdiffdata")
+                val bm = context?.getSystemService(BATTERY_SERVICE) as BatteryManager
+                val batman:Int = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+                arr1.removeAt(14)
+                arr2.removeAt(14)
+                arr1.add(0, batman.toDouble())
+                arr2.add(0, ((arr1[0] - arr1[1])/8).toDouble())
+                Tdb.putListDouble("battdata", arr1)
+                Tdb.putListDouble("battdiffdata", arr2)
+
+                if((arr1[0] - arr1[1])/8 > 0) {
+                    view.findViewById<TextView>(R.id.txt2).setTextColor(Color.parseColor("#7fff00"))
+                    view.findViewById<TextView>(R.id.txt2).text = "Battery charge rate per minute : " + ((arr1[0] - arr1[1])/8).toString() + " %"
+                }
+                else {
+                    view.findViewById<TextView>(R.id.txt2).setTextColor(Color.parseColor("#ff2500"))
+                    view.findViewById<TextView>(R.id.txt2).text = "Battery drain rate per minute : " + ((arr1[0] - arr1[1])/8).toString() + " %"
+                }
+
+                val bdata = ArrayList<BarEntry>()
+                for(i in 0..14) {
+                    bdata.add(BarEntry(i.toFloat(), Tdb.getListDouble("battdiffdata")[i].toFloat()))
+                }
+                val bdtset = BarDataSet(bdata, "Drain rate")
+                bdtset.setColor(Color.parseColor("#ff8c00"))
+                bdtset.setValueTextColor(Color.parseColor("#f3f0ff"))
+                val desc = Description()
+                desc.text = ""
+                bdtset.valueFormatter = DefaultValueFormatter(1)
+                val finaldata= BarData(bdtset)
+
+                val mpchart = view.findViewById<BarChart>(R.id.barchart)
+                mpchart.data = finaldata
+                mpchart.axisRight.textColor = Color.parseColor("#f3f0ff")
+                mpchart.axisLeft.textColor = Color.parseColor("#f3f0ff")
+                mpchart.description = desc
+                mpchart.invalidate()
+
+
+            }
+        }
+        handle.post(runn2)
+
         return view
     }
 
@@ -114,6 +191,30 @@ class LeftFragment : Fragment() {
                     itemView.findViewById(R.id.layoutConstraint_appIcon)
             var appIconImageView: ImageView = itemView.findViewById(R.id.appIcon_ImageView)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val Tdb = TinyDB(context)
+        val bdata = ArrayList<BarEntry>()
+        for(i in 0..14) {
+            bdata.add(BarEntry(i.toFloat(), Tdb.getListDouble("battdiffdata")[i].toFloat()))
+        }
+        val bdtset = BarDataSet(bdata, "Drain rate")
+        bdtset.setColor(Color.parseColor("#ff8c00"))
+        bdtset.setValueTextColor(Color.parseColor("#f3f0ff"))
+        bdtset.valueFormatter = DefaultValueFormatter(1)
+        val desc = Description()
+        desc.text = ""
+        val finaldata= BarData(bdtset)
+
+        val mpchart = view?.findViewById<BarChart>(R.id.barchart)
+        mpchart?.data = finaldata
+        mpchart?.axisRight?.textColor = Color.parseColor("#f3f0ff")
+        mpchart?.axisLeft?.textColor = Color.parseColor("#f3f0ff")
+        mpchart?.description = desc
+        mpchart?.invalidate()
+
     }
 
 }
