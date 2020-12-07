@@ -3,6 +3,7 @@
 package com.prabalbhavishya.cars
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     class ViewPagerAdapter(fm: FragmentManager) :
-            FragmentPagerAdapter(fm) {
+        FragmentPagerAdapter(fm) {
         override fun getItem(position: Int): Fragment {
             when (position) {
                 2 -> return SettingsFragment() //Settings fragment at position 2
@@ -41,5 +42,14 @@ class MainActivity : AppCompatActivity() {
         override fun getCount(): Int {
             return 3 //three fragments
         }
+    }
+
+    override fun onBackPressed() {
+        Toast.makeText(applicationContext, "Already Home", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Toast.makeText(applicationContext, "Welcome Back", Toast.LENGTH_SHORT).show()
     }
 }

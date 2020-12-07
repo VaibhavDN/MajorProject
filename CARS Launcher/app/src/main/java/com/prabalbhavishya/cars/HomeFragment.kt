@@ -50,9 +50,9 @@ import kotlin.collections.HashSet
  */
 class HomeFragment : Fragment() {
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         val googleButton = view.findViewById<MaterialCardView>(R.id.material_google_btn)
@@ -77,20 +77,35 @@ class HomeFragment : Fragment() {
                         handler.postDelayed(runn, timeInterval * 1000)
 
                         if (!prefs.getString("City Name", "c").toString().equals("c")) {
-                            val url = "https://api.openweathermap.org/data/2.5/weather?q=" + prefs.getString("City Name", "c").toString() + "&appid=58f0c9e655cd9d832a1a6d2863f2d2f3&units=metric"
+                            val url =
+                                "https://api.openweathermap.org/data/2.5/weather?q=" + prefs.getString(
+                                    "City Name",
+                                    "c"
+                                )
+                                    .toString() + "&appid=58f0c9e655cd9d832a1a6d2863f2d2f3&units=metric"
 
 
                             try {
                                 val doc = Jsoup.connect(url).ignoreContentType(true)
                                 //Log.println(Log.ASSERT, "Open", doc.execute().body().toString())
                                 val htmlJson = Gson()
-                                val mp: MutableMap<String, Any> = htmlJson.fromJson(doc.execute().body().toString(), object : TypeToken<MutableMap<String, Any>>() {}.type)
+                                val mp: MutableMap<String, Any> = htmlJson.fromJson(
+                                    doc.execute().body().toString(),
+                                    object : TypeToken<MutableMap<String, Any>>() {}.type
+                                )
                                 mp["weather"] = mp["weather"].toString().removePrefix("[")
                                 mp["weather"] = mp["weather"].toString().removeSuffix("]")
-                                val weather: Map<String, Any> = htmlJson.fromJson(mp["weather"].toString(), object : TypeToken<Map<String, Any>>() {}.type)
-                                val temp: Map<String, Any> = htmlJson.fromJson(mp["main"].toString(), object : TypeToken<Map<String, Any>>() {}.type)
+                                val weather: Map<String, Any> = htmlJson.fromJson(
+                                    mp["weather"].toString(),
+                                    object : TypeToken<Map<String, Any>>() {}.type
+                                )
+                                val temp: Map<String, Any> = htmlJson.fromJson(
+                                    mp["main"].toString(),
+                                    object : TypeToken<Map<String, Any>>() {}.type
+                                )
                                 //Log.println(Log.ASSERT, "Preferences work", weather["main"].toString() + " " + temp["temp"].toString())
-                                tempString = weather["main"].toString() + " | " + temp["temp"].toString() + "°C"
+                                tempString =
+                                    weather["main"].toString() + " | " + temp["temp"].toString() + "°C"
                             } catch (e: Exception) {
 
                             }
@@ -112,8 +127,9 @@ class HomeFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.appDrawer_RecyclerView)
         val recyclerViewHotSeat = view.findViewById<RecyclerView>(R.id.hotSeat_RecyclerView)
         val drawerSearchBar = view.findViewById<LinearLayout>(R.id.drawerSearch_LinearLayout)
+
         bottomSheetBehavior.addBottomSheetCallback(object :
-                BottomSheetBehavior.BottomSheetCallback() {
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
@@ -139,22 +155,23 @@ class HomeFragment : Fragment() {
                 //val periodicWorkRequest = OneTimeWorkRequestBuilder<GetAppUsageWorker>().build()
                 //WorkManager.getInstance(applicationContext).enqueue(periodicWorkRequest)
                 val periodicWorkRequest =
-                        PeriodicWorkRequestBuilder<GetAppUsageWorker>(15, TimeUnit.MINUTES).build()
+                    PeriodicWorkRequestBuilder<GetAppUsageWorker>(15, TimeUnit.MINUTES).build()
                 val workTag = "UsageWork"
                 WorkManager.getInstance(context!!).enqueueUniquePeriodicWork(
-                        workTag,
-                        ExistingPeriodicWorkPolicy.KEEP,
-                        periodicWorkRequest
+                    workTag,
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    periodicWorkRequest
                 )
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 //Log.d("BottomSheet slideOffset: ", (slideOffset).toString())
                 //bottomSheet.setBackgroundColor(Color.argb((slideOffset * 200).toInt().coerceAtLeast(120), 0, 0, 0))
-                if(setblur == 1) {
+                if (setblur == 1) {
                     val wallp = WallpaperManager.getInstance(context)
                     var wbmp = wallp.drawable.toBitmap()
-                    wbmp = Bitmap.createScaledBitmap(wbmp, wbmp.height/512, wbmp.width/512, true)
+                    wbmp =
+                        Bitmap.createScaledBitmap(wbmp, wbmp.height / 512, wbmp.width / 512, true)
                     bottomSheet.background = BitmapDrawable(resources, wbmp)
                     setblur = 0
                 }
@@ -211,7 +228,7 @@ class HomeFragment : Fragment() {
 
         //Prediction RecyclerView
         val predictionRecyclerView =
-                view.findViewById<RecyclerView>(R.id.appPrediction_RecyclerView)
+            view.findViewById<RecyclerView>(R.id.appPrediction_RecyclerView)
         //val linearLayoutManagerPredictionRecyclerView =
         LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         predictionRecyclerView.layoutManager = gridLayoutManager2
@@ -269,13 +286,13 @@ class HomeFragment : Fragment() {
     }
 
     class PredictionRecyclerViewAdapter(private var predictedAppsList: ArrayList<AppObject>) :
-            RecyclerView.Adapter<PredictionRecyclerViewAdapter.ViewHolder>() {
+        RecyclerView.Adapter<PredictionRecyclerViewAdapter.ViewHolder>() {
         override fun onCreateViewHolder(
-                parent: ViewGroup,
-                viewType: Int
+            parent: ViewGroup,
+            viewType: Int
         ): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.layout_predicted_appicon, parent, false)
+                .inflate(R.layout.layout_predicted_appicon, parent, false)
             return ViewHolder(view)
         }
 
@@ -288,12 +305,12 @@ class HomeFragment : Fragment() {
             //holder.appIconTextView.text = predictedAppsList[position].get_appName()
             holder.appIconConstraintLayout.setOnClickListener {
                 Toast.makeText(
-                        holder.context,
-                        predictedAppsList[position].get_packageName(),
-                        Toast.LENGTH_SHORT
+                    holder.context,
+                    predictedAppsList[position].get_packageName(),
+                    Toast.LENGTH_SHORT
                 ).show()
                 val appLaunchIntent = holder.context.packageManager.getLaunchIntentForPackage(
-                        predictedAppsList[position].get_packageName()
+                    predictedAppsList[position].get_packageName()
                 )
                 if (appLaunchIntent != null) {
                     holder.context.applicationContext.startActivity(appLaunchIntent)
@@ -308,7 +325,7 @@ class HomeFragment : Fragment() {
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val context: Context = itemView.context
             var appIconConstraintLayout: ConstraintLayout =
-                    itemView.findViewById(R.id.layoutConstraint_appIcon)
+                itemView.findViewById(R.id.layoutConstraint_appIcon)
 
             //var appIconTextView: TextView = itemView.findViewById(R.id.appIcon_TextView)
             var appIconImageView: ImageView = itemView.findViewById(R.id.appIcon_ImageView)
@@ -316,13 +333,13 @@ class HomeFragment : Fragment() {
     }
 
     class HotSeatRecyclerViewAdapter(private var myAppsList: ArrayList<AppObject>) :
-            RecyclerView.Adapter<HotSeatRecyclerViewAdapter.ViewHolder>() {
+        RecyclerView.Adapter<HotSeatRecyclerViewAdapter.ViewHolder>() {
         override fun onCreateViewHolder(
-                parent: ViewGroup,
-                viewType: Int
+            parent: ViewGroup,
+            viewType: Int
         ): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.layout_predicted_appicon, parent, false)
+                .inflate(R.layout.layout_predicted_appicon, parent, false)
             return ViewHolder(view)
         }
 
@@ -332,12 +349,12 @@ class HomeFragment : Fragment() {
             //holder.appIconTextView.text = myAppsList[position].get_appName()
             holder.appIconConstraintLayout.setOnClickListener {
                 Toast.makeText(
-                        holder.context,
-                        myAppsList[position].get_packageName(),
-                        Toast.LENGTH_SHORT
+                    holder.context,
+                    myAppsList[position].get_packageName(),
+                    Toast.LENGTH_SHORT
                 ).show()
                 val appLaunchIntent = holder.context.packageManager.getLaunchIntentForPackage(
-                        myAppsList[position].get_packageName()
+                    myAppsList[position].get_packageName()
                 )
                 if (appLaunchIntent != null) {
                     holder.context.applicationContext.startActivity(appLaunchIntent)
@@ -352,7 +369,7 @@ class HomeFragment : Fragment() {
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val context: Context = itemView.context
             var appIconConstraintLayout: ConstraintLayout =
-                    itemView.findViewById(R.id.layoutConstraint_appIcon)
+                itemView.findViewById(R.id.layoutConstraint_appIcon)
 
             //var appIconTextView: TextView = itemView.findViewById(R.id.appIcon_TextView)
             var appIconImageView: ImageView = itemView.findViewById(R.id.appIcon_ImageView)
@@ -360,15 +377,15 @@ class HomeFragment : Fragment() {
     }
 
     class RecyclerViewAdapter(private var myAppsList: ArrayList<AppObject>) :
-            RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+        RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
         override fun onCreateViewHolder(
-                parent: ViewGroup,
-                viewType: Int
+            parent: ViewGroup,
+            viewType: Int
         ): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(
-                    R.layout.layout_appicon,
-                    parent,
-                    false
+                R.layout.layout_appicon,
+                parent,
+                false
             )
             return ViewHolder(view)
         }
@@ -382,12 +399,12 @@ class HomeFragment : Fragment() {
             holder.appIconTextView.text = myAppsList[position].get_appName()
             holder.appIconConstraintLayout.setOnClickListener {
                 Toast.makeText(
-                        holder.context,
-                        myAppsList[position].get_packageName(),
-                        Toast.LENGTH_SHORT
+                    holder.context,
+                    myAppsList[position].get_packageName(),
+                    Toast.LENGTH_SHORT
                 ).show()
                 val appLaunchIntent = holder.context.packageManager.getLaunchIntentForPackage(
-                        myAppsList[position].get_packageName()
+                    myAppsList[position].get_packageName()
                 )
                 if (appLaunchIntent != null) {
                     holder.context.applicationContext.startActivity(appLaunchIntent)
@@ -431,7 +448,7 @@ class HomeFragment : Fragment() {
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val context: Context = itemView.context
             var appIconConstraintLayout: ConstraintLayout =
-                    itemView.findViewById(R.id.layoutConstraint_appIcon)
+                itemView.findViewById(R.id.layoutConstraint_appIcon)
             var appIconTextView: TextView = itemView.findViewById(R.id.appIcon_TextView)
             var appIconImageView: ImageView = itemView.findViewById(R.id.appIcon_ImageView)
         }
