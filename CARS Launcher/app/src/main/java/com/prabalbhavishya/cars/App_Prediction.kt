@@ -19,7 +19,7 @@ class App_Prediction {
         val cal: Calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+1:00"))
         val currentLocalTime: Date = cal.getTime()
         val date: DateFormat = SimpleDateFormat("h:mm a")
-        date.setTimeZone(TimeZone.getTimeZone("GMT+10:30"))
+        date.setTimeZone(TimeZone.getTimeZone("GMT+5:30"))
 
         val localTime: String = date.format(currentLocalTime)
         val arr = ArrayList<String>()

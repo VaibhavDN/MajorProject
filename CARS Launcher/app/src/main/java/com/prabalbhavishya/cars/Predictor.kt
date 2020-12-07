@@ -36,8 +36,15 @@ class Predictor {
             }
 
         }
+
         val result = map.toList().sortedBy { (_, value) -> value}.toMap()
         val result2 = map2.toList().sortedBy { (_, value) -> value}.toMap()
+        for(i in result) {
+            Log.println(Log.ASSERT, "Freq", i.key + " " + i.value.toString())
+        }
+        for(i in result2) {
+            Log.println(Log.ASSERT, "Dur", i.key + " " + i.value.toString())
+        }
         val lst = Stack<String>()
         val lst2 = Stack<String>()
         for(i in result.keys) {
@@ -49,14 +56,14 @@ class Predictor {
         var prt1 = ArrayList<String>()
         while(prt1.size < 5) {
             val packagename = lst.pop()
-            //Log.println(Log.ASSERT, "LTime", packagename + " in slot ") //[a, b, c]
+            Log.println(Log.ASSERT, "LTime", packagename + " in slot ") //[a, b, c]
             if(packagename in applist && !(packagename in hots)) {
                 prt1.add(packagename)
             }
         }
         while(prt1.size < 10) {
             val packagename = lst2.pop()
-            //Log.println(Log.ASSERT, "LDur", packagename + " in slot ") //[a, b, c]
+            Log.println(Log.ASSERT, "LDur", packagename + " in slot ") //[a, b, c]
             if(packagename in applist && !(packagename in prt1) && !(packagename in hots)) {
                 prt1.add(packagename)
             }

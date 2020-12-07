@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
+import kotlinx.android.synthetic.main.fragment_left.view.*
 
 
 /**
@@ -62,9 +63,10 @@ class LeftFragment : Fragment() {
         }
 
         val Tdb = TinyDB(context)
+        val bm = context?.getSystemService(BATTERY_SERVICE) as BatteryManager
+        val batman:Int = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
         if(Tdb.getListDouble("battdata").size == 0) {
-            val bm = context?.getSystemService(BATTERY_SERVICE) as BatteryManager
-            val batman:Int = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+
             //Log.println(Log.ASSERT, "perc", batman.toString())
             val battdata = ArrayList<Double>()
             val batdiffdata = ArrayList<Double>()
@@ -77,6 +79,9 @@ class LeftFragment : Fragment() {
             Tdb.putListDouble("battdata", battdata)
             Tdb.putListDouble("battdiffdata", batdiffdata)
         }
+        Tdb.putInt("pbat", batman)
+        Tdb.putLong("tbat", System.currentTimeMillis())
+        Tdb.putFloat("life", 60.0F)
 
         val handle = Handler()
         var runn2 = Runnable { kotlin.run {  } }
@@ -98,10 +103,31 @@ class LeftFragment : Fragment() {
                 if((arr1[0] - arr1[1])/8 > 0) {
                     view.findViewById<TextView>(R.id.txt2).setTextColor(Color.parseColor("#7fff00"))
                     view.findViewById<TextView>(R.id.txt2).text = "Battery charge rate per minute : " + ((arr1[0] - arr1[1])/8).toString() + " %"
+                    view.txt3.visibility = View.GONE
+                    Tdb.putInt("pbat", batman)
+                    Tdb.putLong("tbat", System.currentTimeMillis())
+                    Tdb.putFloat("life", 60.0F)
+
                 }
                 else {
                     view.findViewById<TextView>(R.id.txt2).setTextColor(Color.parseColor("#ff2500"))
                     view.findViewById<TextView>(R.id.txt2).text = "Battery drain rate per minute : " + ((arr1[0] - arr1[1])/8).toString() + " %"
+                    if(batman != Tdb.getInt("pbat")) {
+                        val timer = Tdb.getInt("pbat") - batman
+                        val tdiff = System.currentTimeMillis() - Tdb.getLong("tbat")
+                        val trem = ((tdiff * (batman/timer)) / 3600000).toFloat()
+                        view.txt3.visibility = View.VISIBLE
+                        view.txt3.setTextColor(Color.parseColor("#fdb924"))
+                        view.txt3.text = "Battery will last for : " + trem.toString() + " Hours"
+                        Tdb.putInt("pbat", batman)
+                        Tdb.putLong("tbat", System.currentTimeMillis())
+                        Tdb.putFloat("life", trem)
+                    }
+                    else {
+                        view.txt3.visibility = View.VISIBLE
+                        view.txt3.setTextColor(Color.parseColor("#fdb924"))
+                        view.txt3.text = "Battery will last for : " + Tdb.getFloat("life").toString() + " Hours"
+                    }
                 }
 
                 val bdata = ArrayList<BarEntry>()
