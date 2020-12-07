@@ -186,7 +186,21 @@ class HomeFragment : Fragment() {
         val myFullAppList: ArrayList<AppObject> = fetchList.fetchList(requireContext())
         val myAppsList: ArrayList<AppObject> = ArrayList()
         myAppsList.addAll(myFullAppList)
-        val predApplist = App_Prediction().predict_app(requireContext())
+        val hotSeatAppsName: HashSet<String> = HashSet()
+        val hots = ArrayList<String>()
+
+        hotSeatAppsName.add("com.android.chrome")
+        hotSeatAppsName.add("com.android.contacts")
+        hotSeatAppsName.add("com.google.android.youtube")
+        hotSeatAppsName.add("com.google.android.gm")
+        hotSeatAppsName.add("com.google.android.apps.maps")
+
+        hots.add("com.android.chrome")
+        hots.add("com.android.contacts")
+        hots.add("com.google.android.youtube")
+        hots.add("com.google.android.gm")
+        hots.add("com.google.android.apps.maps")
+        val predApplist = App_Prediction().predict_app(myFullAppList, hots)
 
         val gridLayoutManager = GridLayoutManager(requireContext(), 5)
         val gridLayoutManager2 = GridLayoutManager(requireContext(), 5)
@@ -204,13 +218,7 @@ class HomeFragment : Fragment() {
         val predictionRecyclerViewAdapter = PredictionRecyclerViewAdapter(predApplist)
         predictionRecyclerView.adapter = predictionRecyclerViewAdapter
 
-        val hotSeatAppsName: HashSet<String> = HashSet()
 
-        hotSeatAppsName.add("com.android.chrome")
-        hotSeatAppsName.add("com.android.contacts")
-        hotSeatAppsName.add("com.google.android.youtube")
-        hotSeatAppsName.add("com.google.android.gm")
-        hotSeatAppsName.add("com.google.android.apps.maps")
 
         val hotSeatAppList: ArrayList<AppObject> = ArrayList()
         for (app in myAppsList) {

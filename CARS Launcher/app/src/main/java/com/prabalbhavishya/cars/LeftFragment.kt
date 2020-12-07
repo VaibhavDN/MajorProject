@@ -216,7 +216,7 @@ class LeftFragment : Fragment() {
         mpchart?.description = desc
         mpchart?.invalidate()
 
-        Predictor().pred("")
+
 
     }
 
