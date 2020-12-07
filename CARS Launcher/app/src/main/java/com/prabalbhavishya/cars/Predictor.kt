@@ -24,7 +24,6 @@ class Predictor {
                         map2.put(row[2], row[3].toInt())
                     }
                     //Log.println(Log.ASSERT, "Time", row[1].substring(row[1].length - 2)) //[a, b, c]
-
                     //Log.println(Log.ASSERT, "LTime", localTime) //[a, b, c]
                     val r1 = row[1].split(":")
                     val r2 = slot.split(":")
@@ -50,14 +49,14 @@ class Predictor {
         var prt1 = ArrayList<String>()
         while(prt1.size < 5) {
             val packagename = lst.pop()
-            Log.println(Log.ASSERT, "LTime", packagename + " in slot ") //[a, b, c]
+            //Log.println(Log.ASSERT, "LTime", packagename + " in slot ") //[a, b, c]
             if(packagename in applist && !(packagename in hots)) {
                 prt1.add(packagename)
             }
         }
         while(prt1.size < 10) {
             val packagename = lst2.pop()
-            Log.println(Log.ASSERT, "LDur", packagename + " in slot ") //[a, b, c]
+            //Log.println(Log.ASSERT, "LDur", packagename + " in slot ") //[a, b, c]
             if(packagename in applist && !(packagename in prt1) && !(packagename in hots)) {
                 prt1.add(packagename)
             }
