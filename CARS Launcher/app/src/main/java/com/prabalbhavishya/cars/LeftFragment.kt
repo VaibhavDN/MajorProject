@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import kotlinx.android.synthetic.main.fragment_left.view.*
+import me.everything.providers.android.calendar.CalendarProvider
 
 
 /**
@@ -242,7 +243,12 @@ class LeftFragment : Fragment() {
         mpchart?.description = desc
         mpchart?.invalidate()
 
-
+        val cal = CalendarProvider(context)
+        val inst = cal.getInstances(System.currentTimeMillis(), System.currentTimeMillis() + 186400000)
+        for(i in inst.list) {
+            val eve = cal.getEvent(i.eventId)
+            Log.println(Log.ASSERT, "Events", (i.begin -System.currentTimeMillis()).toString() + " " + eve.displayName)
+        }
 
     }
 
