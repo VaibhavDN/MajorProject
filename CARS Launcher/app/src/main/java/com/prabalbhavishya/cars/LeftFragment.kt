@@ -87,7 +87,10 @@ class LeftFragment : Fragment() {
         }
         Tdb.putInt("pbat", batman)
         Tdb.putLong("tbat", System.currentTimeMillis())
-        Tdb.putFloat("life", 50.0F)
+        if(Tdb.getFloat("life").isNaN()) {
+            Tdb.putFloat("life", 50.0F)
+        }
+
 
         val handle = Handler()
         var runn2 = Runnable { kotlin.run {  } }
@@ -154,6 +157,37 @@ class LeftFragment : Fragment() {
                 mpchart.axisLeft.textColor = Color.parseColor("#f3f0ff")
                 mpchart.description = desc
                 mpchart.invalidate()
+
+                val calendarProvider = CalendarProvider(context)
+                val events = calendarProvider.getInstances(System.currentTimeMillis(), System.currentTimeMillis() + 86400 * 2000).list
+                Log.d("check 1", events.size.toString() + "f")
+                var i = 0
+                for (model in events) {
+                    if (calendarProvider.getEvent(model.eventId).allDay == false) {
+                        i++
+                        println(calendarProvider.getEvent(model.eventId).displayName + "," + convert(model.begin))
+                    }
+                }
+                val sz = i
+                //val array = arrayOfNulls<pojo>(sz)
+                var array = ArrayList<pojo>()
+                i = 0
+                println(array.size)
+                for (model in events) {
+                    if (!calendarProvider.getEvent(model.eventId).allDay) {
+                        //array[i]!!.dName=(calendarProvider.getEvent(model.eventId).displayName)
+                        array.add(pojo(calendarProvider.getEvent(model.eventId).displayName,convert(model.begin),
+                            (Tdb.getFloat("life") * 3600000).toLong(), model.begin))
+                        //array[i]!!.date = convert(model.begin)
+                        i++
+                    }
+//            if(array[i]==null){
+//                println(i.toString()+"YES")
+//            }
+                }
+                val recyclerView = view?.findViewById<RecyclerView>(R.id.recylerview)
+                recyclerView?.layoutManager = LinearLayoutManager(context)
+                recyclerView?.adapter = adap(array)
 
 
             }
@@ -298,12 +332,14 @@ class LeftFragment : Fragment() {
         mpchart?.description = desc
         mpchart?.invalidate()
 
-        val cal = CalendarProvider(context)
-        val inst = cal.getInstances(System.currentTimeMillis(), System.currentTimeMillis() + 186400000)
-        for(i in inst.list) {
-            val eve = cal.getEvent(i.eventId)
-            Log.println(Log.ASSERT, "Events", (i.begin -System.currentTimeMillis()).toString() + " " + eve.displayName)
-        }
+//        val cal = CalendarProvider(context)
+//        val inst = cal.getInstances(System.currentTimeMillis(), System.currentTimeMillis() + 186400000)
+//        for(i in inst.list) {
+//            val eve = cal.getEvent(i.eventId)
+//            Log.println(Log.ASSERT, "Events", (i.begin -System.currentTimeMillis()).toString() + " " + eve.displayName)
+//        }
+
+        recyclerView?.invalidate()
 
     }
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.prabalbhavishya.cars.adap.viewholder
@@ -24,10 +25,12 @@ class adap(private val array: ArrayList<pojo>) : RecyclerView.Adapter<adap.viewh
         var life = array[position]?.life
         holder.txt.text = "$displayName on $date"
         if(System.currentTimeMillis() + life > dtm) {
-            holder.txt.setTextColor(Color.GREEN)
+            holder.bg.setBackgroundColor(Color.GREEN)
+            holder.txt.setTextColor(Color.BLACK)
         }
         else {
-            holder.txt.setTextColor(Color.RED)
+            holder.bg.setBackgroundColor(Color.RED)
+            holder.txt.setTextColor(Color.WHITE)
         }
     }
 
@@ -37,9 +40,11 @@ class adap(private val array: ArrayList<pojo>) : RecyclerView.Adapter<adap.viewh
 
     inner class viewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txt: TextView
+        var bg: LinearLayout
 
         init {
             txt = itemView.findViewById(R.id.text)
+            bg = itemView.findViewById(R.id.bgevent)
         }
     }
 }
