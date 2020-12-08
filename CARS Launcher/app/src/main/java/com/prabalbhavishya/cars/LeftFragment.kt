@@ -16,6 +16,7 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
@@ -26,6 +27,10 @@ import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import kotlinx.android.synthetic.main.fragment_left.view.*
 import me.everything.providers.android.calendar.CalendarProvider
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -82,13 +87,13 @@ class LeftFragment : Fragment() {
         }
         Tdb.putInt("pbat", batman)
         Tdb.putLong("tbat", System.currentTimeMillis())
-        Tdb.putFloat("life", 60.0F)
+        Tdb.putFloat("life", 50.0F)
 
         val handle = Handler()
         var runn2 = Runnable { kotlin.run {  } }
         runn2 = Runnable {
             kotlin.run {
-                handle.postDelayed(runn2, 480 * 1000)
+                handle.postDelayed(runn2, 120 * 1000)
                 val Tdb = TinyDB(context)
                 val arr1 = Tdb.getListDouble("battdata")
                 val arr2 = Tdb.getListDouble("battdiffdata")
@@ -97,11 +102,11 @@ class LeftFragment : Fragment() {
                 arr1.removeAt(14)
                 arr2.removeAt(14)
                 arr1.add(0, batman.toDouble())
-                arr2.add(0, ((arr1[0] - arr1[1])/8).toDouble())
+                arr2.add(0, ((arr1[0] - arr1[1])/2).toDouble())
                 Tdb.putListDouble("battdata", arr1)
                 Tdb.putListDouble("battdiffdata", arr2)
 
-                if((arr1[0] - arr1[1])/8 > 0) {
+                if((arr1[0] - arr1[1])/2 > 0) {
                     view.findViewById<TextView>(R.id.txt2).setTextColor(Color.parseColor("#7fff00"))
                     view.findViewById<TextView>(R.id.txt2).text = "Battery charge rate per minute : " + ((arr1[0] - arr1[1])/8).toString() + " %"
                     view.txt3.visibility = View.GONE
@@ -156,6 +161,20 @@ class LeftFragment : Fragment() {
         handle.post(runn2)
 
         return view
+    }
+
+    fun convert(milli: Long): String {
+
+        // Creating date format
+        val simple: DateFormat = SimpleDateFormat("dd/MM/yyyy h:mm a")
+
+        // Creating date from milliseconds
+        // using Date() constructor
+        val result = Date(milli)
+
+        // Formatting Date according to the
+        // given format
+        return simple.format(result)
     }
 
     class RemoveAppListAdapter(private var RemoveApplist: ArrayList<AppObject>) :
@@ -224,6 +243,42 @@ class LeftFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val Tdb = TinyDB(context)
+
+        val calendarProvider = CalendarProvider(context)
+        val events = calendarProvider.getInstances(System.currentTimeMillis(), System.currentTimeMillis() + 86400 * 2000).list
+        Log.d("check 1", events.size.toString() + "f")
+        var i = 0
+        for (model in events) {
+            if (calendarProvider.getEvent(model.eventId).allDay == false) {
+                i++
+                println(calendarProvider.getEvent(model.eventId).displayName + "," + convert(model.begin))
+            }
+        }
+        val sz = i
+        //val array = arrayOfNulls<pojo>(sz)
+        var array = ArrayList<pojo>()
+        i = 0
+        println(array.size)
+        for (model in events) {
+            if (!calendarProvider.getEvent(model.eventId).allDay) {
+                //array[i]!!.dName=(calendarProvider.getEvent(model.eventId).displayName)
+                array.add(pojo(calendarProvider.getEvent(model.eventId).displayName,convert(model.begin),
+                    (Tdb.getFloat("life") * 3600000).toLong(), model.begin))
+                //array[i]!!.date = convert(model.begin)
+                i++
+            }
+//            if(array[i]==null){
+//                println(i.toString()+"YES")
+//            }
+        }
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.recylerview)
+        recyclerView?.layoutManager = LinearLayoutManager(context)
+        recyclerView?.adapter = adap(array)
+
+
+
+
+
         val bdata = ArrayList<BarEntry>()
         for(i in 0..14) {
             bdata.add(BarEntry(i.toFloat(), Tdb.getListDouble("battdiffdata")[i].toFloat()))
