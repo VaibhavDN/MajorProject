@@ -3,8 +3,10 @@ package com.prabalbhavishya.cars
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
+import android.content.Intent
 import android.text.format.DateUtils
 import android.util.Log
+import android.widget.Toast
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import java.io.File
@@ -94,11 +96,16 @@ class GetAppUsageWorker(context: Context, workerParameters: WorkerParameters) : 
         }
 
         //Save usage stats on disk
-        val path = applicationContext.getExternalFilesDir("UsageDir")
-        val file = File(path, "appUsageData.csv")
-        val fileOutputStream = FileOutputStream(file, true)
-        fileOutputStream.write(textToSave.toByteArray())
-        fileOutputStream.close()
+        try {
+            val path = applicationContext.getExternalFilesDir("UsageDir")
+            val file = File(path, "appUsageData.csv")
+            val fileOutputStream = FileOutputStream(file, true)
+            fileOutputStream.write(textToSave.toByteArray())
+            fileOutputStream.close()
+        }
+        catch (e: Exception){
+            Toast.makeText(applicationContext, e.toString(), Toast.LENGTH_SHORT).show()
+        }
 
         //Toast.makeText(applicationContext, "Worker Ran", Toast.LENGTH_LONG).show()
         Log.d("Worker running: ", "Successful")

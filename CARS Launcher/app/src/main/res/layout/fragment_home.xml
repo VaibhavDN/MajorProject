@@ -30,6 +30,7 @@
             android:focusable="true"
             android:padding="10sp"
             android:theme="@style/Theme.MaterialComponents"
+            app:cardBackgroundColor="#E6333333"
             app:cardCornerRadius="15sp"
             app:cardElevation="8sp">
 

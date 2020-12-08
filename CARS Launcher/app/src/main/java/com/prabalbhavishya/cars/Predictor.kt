@@ -1,7 +1,9 @@
 package com.prabalbhavishya.cars
 
 import android.util.Log
+import android.widget.Toast
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
+import java.lang.Exception
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -13,28 +15,34 @@ class Predictor {
         val ret =  ArrayList<AppObject>()
         var map = mutableMapOf<String, Int>()
         var map2 = mutableMapOf<String, Int>()
-        csvReader().open("/sdcard/Android/data/com.prabalbhavishya.cars/files/UsageDir/appUsageData.csv") {
-            readAllAsSequence().forEach { row ->
-                //Do something
-                if(row[1].length != 0) {
-                    if(map[row[2]] == null) {
-                        map.put(row[2], 0)
-                    }
-                    if(map2[row[2]] == null) {
-                        map2.put(row[2], row[3].toInt())
-                    }
-                    //Log.println(Log.ASSERT, "Time", row[1].substring(row[1].length - 2)) //[a, b, c]
-                    //Log.println(Log.ASSERT, "LTime", localTime) //[a, b, c]
-                    val r1 = row[1].split(":")
-                    val r2 = slot.split(":")
-                    //Log.println(Log.ASSERT, "first", slot.substring(slot.length - 2) + " " + row[1].substring(row[1].length - 2))
-                    if(slot.substring(slot.length - 2).equals(row[1].substring(row[1].length - 2)) && r1[0].equals(r2[0])) {
-                        map[row[2]] = map.getOrDefault(row[2], 0) + 1
-                        //Log.println(Log.ASSERT, "rec", "yes")
+        try {
+            csvReader().open("/sdcard/Android/data/com.prabalbhavishya.cars/files/UsageDir/appUsageData.csv") {
+                readAllAsSequence().forEach { row ->
+                    //Do something
+                    if (row[1].length != 0) {
+                        if (map[row[2]] == null) {
+                            map.put(row[2], 0)
+                        }
+                        if (map2[row[2]] == null) {
+                            map2.put(row[2], row[3].toInt())
+                        }
+                        //Log.println(Log.ASSERT, "Time", row[1].substring(row[1].length - 2)) //[a, b, c]
+                        //Log.println(Log.ASSERT, "LTime", localTime) //[a, b, c]
+                        val r1 = row[1].split(":")
+                        val r2 = slot.split(":")
+                        //Log.println(Log.ASSERT, "first", slot.substring(slot.length - 2) + " " + row[1].substring(row[1].length - 2))
+                        if (slot.substring(slot.length - 2)
+                                .equals(row[1].substring(row[1].length - 2)) && r1[0].equals(r2[0])
+                        ) {
+                            map[row[2]] = map.getOrDefault(row[2], 0) + 1
+                            //Log.println(Log.ASSERT, "rec", "yes")
+                        }
                     }
                 }
             }
-
+        }
+        catch (e: Exception){
+            Log.d("Exception", e.toString())
         }
 
         val result = map.toList().sortedBy { (_, value) -> value}.toMap()

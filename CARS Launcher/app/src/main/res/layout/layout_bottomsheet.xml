@@ -64,6 +64,7 @@
                 android:id="@+id/drawerSearch_EditText"
                 android:layout_width="match_parent"
                 android:layout_height="45sp"
+                android:background="@color/transparent"
                 android:layout_marginHorizontal="10sp"
                 android:autofillHints="Search"
                 android:hint="@string/search"
