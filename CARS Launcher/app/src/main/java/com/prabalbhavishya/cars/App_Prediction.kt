@@ -40,7 +40,7 @@ class App_Prediction {
     fun RemoveAppList(context: Context): ArrayList<AppObject> {
         val appsFetched = FetchAppsList().fetchList(context)
         val time = Calendar.getInstance()
-        time.set(Calendar.DAY_OF_MONTH, -1)
+        time.set(Calendar.DAY_OF_MONTH, -30)
         val start = time.timeInMillis
         val end = System.currentTimeMillis()
 

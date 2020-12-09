@@ -27,10 +27,14 @@ class adap(private val array: ArrayList<pojo>) : RecyclerView.Adapter<adap.viewh
         if(System.currentTimeMillis() + life > dtm) {
             holder.bg.setBackgroundColor(Color.GREEN)
             holder.txt.setTextColor(Color.BLACK)
+            holder.txt2.setTextColor(Color.BLACK)
+            holder.txt2.text = "Can attend"
         }
         else {
             holder.bg.setBackgroundColor(Color.RED)
             holder.txt.setTextColor(Color.WHITE)
+            holder.txt2.setTextColor(Color.WHITE)
+            holder.txt2.text = "Cannot attend"
         }
     }
 
@@ -41,10 +45,12 @@ class adap(private val array: ArrayList<pojo>) : RecyclerView.Adapter<adap.viewh
     inner class viewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txt: TextView
         var bg: LinearLayout
+        var txt2: TextView
 
         init {
             txt = itemView.findViewById(R.id.text)
             bg = itemView.findViewById(R.id.bgevent)
+            txt2 = itemView.findViewById(R.id.text2)
         }
     }
 }
