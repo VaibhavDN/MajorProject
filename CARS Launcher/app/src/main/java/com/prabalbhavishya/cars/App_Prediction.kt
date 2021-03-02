@@ -9,7 +9,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class App_Prediction {
-    fun predict_app(appsFetched:ArrayList<AppObject>, hots:ArrayList<String>): ArrayList<AppObject> {
+    fun predict_app(appsFetched:ArrayList<AppObject>, hots:ArrayList<String>, context: Context): ArrayList<AppObject> {
 //        val rnd = Random()
 //        val rndints = IntArray(10) { rnd.nextInt(appsFetched.size) }
 //        val appsReturned = ArrayList<AppObject>()
@@ -26,7 +26,7 @@ class App_Prediction {
         for(i in appsFetched) {
             arr.add(i.get_packageName())
         }
-        val ret = Predictor().pred(localTime, arr, hots)
+        val ret = Predictor().pred(localTime, arr, hots, context)
         val fret = ArrayList<AppObject>()
         for(i in appsFetched) {
             if(i.get_packageName() in ret) {

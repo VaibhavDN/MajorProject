@@ -217,7 +217,7 @@ class HomeFragment : Fragment() {
         hots.add("com.google.android.youtube")
         hots.add("com.google.android.gm")
         hots.add("com.google.android.apps.maps")
-        val predApplist = App_Prediction().predict_app(myFullAppList, hots)
+        val predApplist = context?.let { App_Prediction().predict_app(myFullAppList, hots, it) }
 
         val gridLayoutManager = GridLayoutManager(requireContext(), 5)
         val gridLayoutManager2 = GridLayoutManager(requireContext(), 5)
@@ -232,7 +232,7 @@ class HomeFragment : Fragment() {
         //val linearLayoutManagerPredictionRecyclerView =
         LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         predictionRecyclerView.layoutManager = gridLayoutManager2
-        val predictionRecyclerViewAdapter = PredictionRecyclerViewAdapter(predApplist)
+        val predictionRecyclerViewAdapter = predApplist?.let { PredictionRecyclerViewAdapter(it) }
         predictionRecyclerView.adapter = predictionRecyclerViewAdapter
 
 
