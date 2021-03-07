@@ -4,10 +4,7 @@ import android.content.Context
 import android.content.Context.BATTERY_SERVICE
 import android.content.Intent
 import android.graphics.Color
-import android.os.BatteryManager
-import android.os.Bundle
-import android.os.Handler
-import android.os.SystemClock
+import android.os.*
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,9 +21,12 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.DefaultValueFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.fragment_left.*
 import kotlinx.android.synthetic.main.fragment_left.view.*
 import me.everything.providers.android.calendar.CalendarProvider
+import org.jsoup.Jsoup
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,6 +37,32 @@ import kotlin.collections.ArrayList
  * An example full-screen fragment that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
+
+internal class NewsDTO {
+    var status: String? = null
+    var totalResults = 0
+    var articles: ArrayList<ArticleDTO>? = null
+}
+
+internal class ArticleDTO {
+    var source: SourceDTO? = null
+    var author: String? = null
+    var title: String? = null
+    var description: String? = null
+    var url: String? = null
+    var urlToImage: String? = null
+    var publishedAt: String? = null
+    var content: String? = null
+
+}
+
+
+internal class SourceDTO {
+    var id: String? = null
+    var name: String? = null
+}
+
+
 class LeftFragment : Fragment() {
 
     override fun onCreateView(
@@ -69,27 +95,6 @@ class LeftFragment : Fragment() {
         }
 
         val Tdb = TinyDB(context)
-        val bm = context?.getSystemService(BATTERY_SERVICE) as BatteryManager
-        val batman:Int = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
-        if(Tdb.getListDouble("battdata").size == 0) {
-
-            //Log.println(Log.ASSERT, "perc", batman.toString())
-            val battdata = ArrayList<Double>()
-            val batdiffdata = ArrayList<Double>()
-            for(i in 0..14) {
-                battdata.add(batman.toDouble())
-            }
-            for(i in 0..14) {
-                batdiffdata.add(0.toDouble())
-            }
-            Tdb.putListDouble("battdata", battdata)
-            Tdb.putListDouble("battdiffdata", batdiffdata)
-        }
-        Tdb.putInt("pbat", batman)
-        Tdb.putLong("tbat", System.currentTimeMillis())
-        if(Tdb.getFloat("life").isNaN()) {
-            Tdb.putFloat("life", 50.0F)
-        }
 
 
         val handle = Handler()
@@ -97,66 +102,43 @@ class LeftFragment : Fragment() {
         runn2 = Runnable {
             kotlin.run {
                 handle.postDelayed(runn2, 120 * 1000)
+                var ans = 0.0
                 val Tdb = TinyDB(context)
-                val arr1 = Tdb.getListDouble("battdata")
-                val arr2 = Tdb.getListDouble("battdiffdata")
+                val arr1 = Tdb.getListDouble("batt")
+                val arr2 = Tdb.getListLong("battdiff")
                 val bm = context?.getSystemService(BATTERY_SERVICE) as BatteryManager
                 val batman:Int = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
-                arr1.removeAt(14)
-                arr2.removeAt(14)
+
                 arr1.add(0, batman.toDouble())
-                arr2.add(0, ((arr1[0] - arr1[1])/2).toDouble())
-                Tdb.putListDouble("battdata", arr1)
-                Tdb.putListDouble("battdiffdata", arr2)
+                arr2.add(0, System.currentTimeMillis())
 
-                if((arr1[0] - arr1[1])/2 > 0) {
-                    view.findViewById<TextView>(R.id.txt2).setTextColor(Color.parseColor("#7fff00"))
-                    view.findViewById<TextView>(R.id.txt2).text = "Battery charge rate per minute : " + ((arr1[0] - arr1[1])/8).toString() + " %"
-                    view.txt3.visibility = View.GONE
-                    Tdb.putInt("pbat", batman)
-                    Tdb.putLong("tbat", System.currentTimeMillis())
-                    Tdb.putFloat("life", 60.0F)
-
+                if(arr1.size > 30){
+                    arr1.removeAt(arr1.size - 1)
+                    arr2.removeAt(arr1.size - 1)
                 }
-                else {
-                    view.findViewById<TextView>(R.id.txt2).setTextColor(Color.parseColor("#ff2500"))
-                    view.findViewById<TextView>(R.id.txt2).text = "Battery drain rate per minute : " + ((arr1[0] - arr1[1])/8).toString() + " %"
-                    if(batman != Tdb.getInt("pbat")) {
-                        val timer = Tdb.getInt("pbat") - batman
-                        val tdiff = System.currentTimeMillis() - Tdb.getLong("tbat")
-                        val trem = ((tdiff * (batman/timer)) / 3600000).toFloat()
-                        view.txt3.visibility = View.VISIBLE
-                        view.txt3.setTextColor(Color.parseColor("#fdb924"))
-                        view.txt3.text = "Battery will last for : " + trem.toString() + " Hours"
-                        Tdb.putInt("pbat", batman)
-                        Tdb.putLong("tbat", System.currentTimeMillis())
-                        Tdb.putFloat("life", trem)
+                Tdb.putListDouble("batt", arr1)
+                Tdb.putListLong("battdiff", arr2)
+
+                if(arr1.size < 2){
+                    tx1.text = "Battery will last for 80 hrs"
+                }
+                else{
+                    var diff = arr2[0] - arr2[arr2.size - 1]
+                    for(i in 0 until arr1.size - 1){
+                        var d = (arr1[i + 1] - arr1[i])/(((arr2[i] - arr2[i + 1])/1000).toDouble()/3600)
+                        ans += d //* ((arr2[i] - arr2[i + 1]).toDouble() / diff)
+                        print(ans)
+
                     }
-                    else {
-                        view.txt3.visibility = View.VISIBLE
-                        view.txt3.setTextColor(Color.parseColor("#fdb924"))
-                        view.txt3.text = "Battery will last for : " + Tdb.getFloat("life").toString() + " Hours"
+                    ans /= arr1.size
+
+                    if(ans > 0){
+                        tx1.text = "Battery will last for " + ((batman/ans)).toInt().toString() + " hrs"
+                    }
+                    else{
+                        tx1.text = "Battery will last for 80 hrs"
                     }
                 }
-
-                val bdata = ArrayList<BarEntry>()
-                for(i in 0..14) {
-                    bdata.add(BarEntry(i.toFloat(), Tdb.getListDouble("battdiffdata")[i].toFloat()))
-                }
-                val bdtset = BarDataSet(bdata, "Drain rate")
-                bdtset.setColor(Color.parseColor("#ff8c00"))
-                bdtset.setValueTextColor(Color.parseColor("#f3f0ff"))
-                val desc = Description()
-                desc.text = ""
-                bdtset.valueFormatter = DefaultValueFormatter(1)
-                val finaldata= BarData(bdtset)
-
-                val mpchart = view.findViewById<BarChart>(R.id.barchart)
-                mpchart.data = finaldata
-                mpchart.axisRight.textColor = Color.parseColor("#f3f0ff")
-                mpchart.axisLeft.textColor = Color.parseColor("#f3f0ff")
-                mpchart.description = desc
-                mpchart.invalidate()
 
                 val calendarProvider = CalendarProvider(context)
                 val events = calendarProvider.getInstances(System.currentTimeMillis(), System.currentTimeMillis() + 86400 * 2000).list
@@ -193,6 +175,27 @@ class LeftFragment : Fragment() {
             }
         }
         handle.post(runn2)
+
+        if(Tdb.getListString("NT").isEmpty() || (System.currentTimeMillis() - Tdb.getLong("time")) > 3600000){
+
+        }
+        else{
+            Log.println(Log.ASSERT, "title", Tdb.getListString("NT").toString())
+            var arr1 = Tdb.getListString("NT")
+            var arr2 = Tdb.getListString("ND")
+            var arr4 = Tdb.getListString("NU")
+            var arr3 = ArrayList<NewsObject>()
+
+            for(i in 0..arr1.size - 1){
+                arr3.add(NewsObject(arr1[i], arr2[i], arr4[i]))
+            }
+
+            val newsview = view.findViewById<RecyclerView>(R.id.newsview)
+            val gridLayout = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            newsview.layoutManager = gridLayout
+            newsview.adapter = NewsListAdapter(arr3)
+
+        }
 
         return view
     }
@@ -313,25 +316,6 @@ class LeftFragment : Fragment() {
 
 
 
-        val bdata = ArrayList<BarEntry>()
-        for(i in 0..14) {
-            bdata.add(BarEntry(i.toFloat(), Tdb.getListDouble("battdiffdata")[i].toFloat()))
-        }
-        val bdtset = BarDataSet(bdata, "Drain rate")
-        bdtset.setColor(Color.parseColor("#ff8c00"))
-        bdtset.setValueTextColor(Color.parseColor("#f3f0ff"))
-        bdtset.valueFormatter = DefaultValueFormatter(1)
-        val desc = Description()
-        desc.text = ""
-        val finaldata= BarData(bdtset)
-
-        val mpchart = view?.findViewById<BarChart>(R.id.barchart)
-        mpchart?.data = finaldata
-        mpchart?.axisRight?.textColor = Color.parseColor("#f3f0ff")
-        mpchart?.axisLeft?.textColor = Color.parseColor("#f3f0ff")
-        mpchart?.description = desc
-        mpchart?.invalidate()
-
 //        val cal = CalendarProvider(context)
 //        val inst = cal.getInstances(System.currentTimeMillis(), System.currentTimeMillis() + 186400000)
 //        for(i in inst.list) {
@@ -341,6 +325,96 @@ class LeftFragment : Fragment() {
 
         recyclerView?.invalidate()
 
+
+        var tdb = TinyDB(context)
+        savebtn.setOnClickListener {
+
+            Log.println(Log.ASSERT, "save", "thain thain")
+            var arr = tdb.getListString("qs")
+            var arrd = tdb.getListString("qd")
+            var sdf = SimpleDateFormat("MMMM dd yyyy k:mm")
+            arr.add(0, edt1.text.toString())
+            arrd.add(0, sdf.format(Date()).toString())
+            tdb.putListString("qs", arr)
+            tdb.putListString("qd", arrd)
+            Toast.makeText(context, "Note Saved", Toast.LENGTH_SHORT).show()
+        }
+
+        reviewbtn.setOnClickListener {
+            Log.println(Log.ASSERT, "review", tdb.getListString("qs").toString() + " " + tdb.getListString("qd").toString())
+            var intent = Intent(context, QuicknoteActivity::class.java)
+            startActivity(intent)
+        }
+
+
+        val handler = Handler(Looper.getMainLooper())
+        var runn = Runnable {}
+        runn = Runnable {
+                kotlin.run {
+                    Thread {
+                        var url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=a1f1534aaf824034a963f6ef94eb3157"
+                        try {
+                            val doc = Jsoup.connect(url).ignoreContentType(true)
+                            //Log.println(Log.ASSERT, "Open", doc.execute().body().toString())
+                            val htmlJson = Gson()
+                            val mp = htmlJson.fromJson(doc.execute().body().toString(), NewsDTO().javaClass)
+
+                            var NewsTitle = ArrayList<String>()
+                            var NewsDesc= ArrayList<String>()
+                            var NewsUrl = ArrayList<String>()
+
+
+                            for(i in mp.articles!!) {
+
+                                NewsTitle.add(i.title.toString())
+                                NewsDesc.add(i.urlToImage.toString())
+                                NewsUrl.add(i.url.toString())
+
+                                tdb.putListString("NT", NewsTitle)
+                                tdb.putListString("ND", NewsDesc)
+                                tdb.putListString("NU", NewsUrl)
+
+                                tdb.putLong("time", System.currentTimeMillis())
+
+                                Log.println(Log.ASSERT, "url", tdb.getListString("NU").toString())
+
+                            }
+
+                        } catch (e: Exception) {
+                            Log.println(Log.ASSERT, "title", "nahi chala")
+                        }
+
+                    }.start()
+                    var arr1 = Tdb.getListString("NT")
+                    var arr2 = Tdb.getListString("ND")
+                    var arr4 = Tdb.getListString("NU")
+                    var arr3 = ArrayList<NewsObject>()
+
+                    for(i in 0..arr1.size - 1){
+                        arr3.add(NewsObject(arr1[i], arr2[i],  arr4[i]))
+                    }
+
+                    val newsview = view?.findViewById<RecyclerView>(R.id.newsview)
+                    val gridLayout = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    newsview?.layoutManager = gridLayout
+                    newsview?.adapter = NewsListAdapter(arr3)
+                    newscard.visibility = View.VISIBLE
+                }
+
+        }
+
+        if(tdb.getListString("NT").isEmpty() || (System.currentTimeMillis() - tdb.getLong("time")) > 360000){
+            newscard.visibility = View.GONE
+            handler.post(runn)
+        }
+        else{
+            Log.println(Log.ASSERT, "title", tdb.getListString("NT").toString())
+        }
+
+
+
+
     }
+
 
 }

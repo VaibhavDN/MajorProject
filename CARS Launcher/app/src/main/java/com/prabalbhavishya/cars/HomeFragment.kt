@@ -219,7 +219,7 @@ class HomeFragment : Fragment() {
         hots.add("com.google.android.apps.maps")
         val predApplist = context?.let { App_Prediction().predict_app(myFullAppList, hots, it) }
 
-        val gridLayoutManager = GridLayoutManager(requireContext(), 5)
+        val gridLayoutManager = GridLayoutManager(requireContext(), 4)
         val gridLayoutManager2 = GridLayoutManager(requireContext(), 5)
         recyclerView.layoutManager = gridLayoutManager
         //recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.HORIZONTAL))

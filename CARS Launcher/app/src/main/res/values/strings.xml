@@ -35,5 +35,11 @@
     <string name="show_usage_stats">Show usage stats</string>
     <string name="apps_that_you_can_remove">Apps that you can remove</string>
     <string name="refresh">refresh</string>
+    <string name="title_activity_quicknote">QuicknoteActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 
 </resources>

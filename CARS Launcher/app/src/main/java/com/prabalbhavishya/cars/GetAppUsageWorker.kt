@@ -23,10 +23,10 @@ class GetAppUsageWorker(context: Context, workerParameters: WorkerParameters) : 
     override fun doWork(): Result {
         val usageStatsManager =
                 applicationContext.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        Log.d("StartTime: ", (System.currentTimeMillis() - 1000 * 60 * 15).toString())
+        Log.d("StartTime: ", (System.currentTimeMillis() - 1000 * 60 * 150).toString())
         Log.d("End Time: ", (System.currentTimeMillis() + 10000).toString())
         val usageEvents: UsageEvents = usageStatsManager.queryEvents(
-                System.currentTimeMillis() - 1000 * 60 * 15,
+                System.currentTimeMillis() - 1000 * 60 * 150,
                 System.currentTimeMillis() + 10000
         )
 

@@ -1,16 +1,18 @@
 package com.prabalbhavishya.cars
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.VolleyError
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import com.google.gson.Gson
-import org.json.JSONArray
-import org.json.JSONObject
+import kotlinx.coroutines.runBlocking
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.lang.StringBuilder
+import java.net.HttpURLConnection
+import java.net.URL
+import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -52,7 +54,7 @@ class Predictor {
         catch (e: Exception){
             Log.d("Exception", e.toString())
         }
-//        Log.println(Log.ASSERT, "csv", cst)
+        print(cst)
         var sdf = SimpleDateFormat("MMMM dd")
         val currentDate = sdf.format(Date())
         sdf = SimpleDateFormat("k")
@@ -74,44 +76,74 @@ class Predictor {
 
         val tdb = TinyDB(context)
 
+        val handler = Handler(Looper.getMainLooper())
+        var runn = Runnable {}
+        runn = Runnable {
+            kotlin.run {
+                Thread {
+                    var map1: Map<String, ArrayList<String>> = HashMap()
+                    runBlocking {
+                        try {
+                            map1 = Gson().fromJson(getresp(cst, currentDate), map1.javaClass)
+                        }
+                        catch (e: Exception) {
 
-        var queue = Volley.newRequestQueue(context)
-        var url = "http://192.168.43.48:8080/classify/"
-        var response = "nahi chala"
-        val postRequest: StringRequest = object : StringRequest(
-            Request.Method.POST, url,
-            Response.Listener<String?> { response -> // response
-                val res = JSONObject(response)
-                Log.d("Response", res.get("0").toString())
-                var map: Map<String, ArrayList<String>> = HashMap()
-                map = Gson().fromJson(res.toString(), map.javaClass)
+                        }
+                    }
+                    try {
+                        for (i in map1) {
+                            tdb.putListString(i.key, i.value)
+                            //Log.println(Log.ASSERT, "currt", currtime + " " + i.key)
+                        }
+                    }
+                    catch (e: Exception) {
 
-                for(i in map){
-                    tdb.putListString(i.key, i.value)
-//                    Log.println(Log.ASSERT, "currt", currtime + " " + i.key)
-                }
-
-
-//                if(tdb.getListString(currtime.toString()).isNotEmpty()){
-//                    Log.println(Log.WARN,"hibi", "chal gaya antim mein")
-//                }
-
-            },
-            Response.ErrorListener { // error
-                Log.d("Error.Response", response)
-            }
-        ) {
-            override fun getParams(): Map<String, String> {
-                val params: MutableMap<String, String> = HashMap()
-                params["csv"] = cst
-                params["Day"] = currentDate
-                return params
+                    }
+                }.start()
             }
         }
-        queue.add(postRequest)
+        handler.post(runn)
+
+
+
+//        var queue = Volley.newRequestQueue(context)
+//        var url = "http://192.168.43.48:8080/classify/"
+//        var response = "nahi chala"
+//        val postRequest: StringRequest = object : StringRequest(
+//            Request.Method.POST, url,
+//            Response.Listener<String?> { response -> // response
+//                val res = JSONObject(response)
+//                Log.d("Response", res.get("0").toString())
+//                var map: Map<String, ArrayList<String>> = HashMap()
+//                map = Gson().fromJson(res.toString(), map.javaClass)
+//
+//
+//
+//            },
+//            Response.ErrorListener { // error
+//
+//                Log.println(Log.ERROR, "error", "could not connect")
+//
+//            }
+//        ) {
+//            override fun getParams(): Map<String, String> {
+//                val params: MutableMap<String, String> = HashMap()
+//                params["csv"] = cst
+//                params["Day"] = currentDate
+//                return params
+//            }
+//        }
+//        postRequest.setRetryPolicy(
+//            DefaultRetryPolicy(
+//                5000,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+//            )
+//        )
+//        queue.add(postRequest)
 
         if(tdb.getListString(currtime).isNotEmpty()){
-            Log.println(Log.ASSERT,"hibi", "chal gaya antim mein")
+            Log.println(Log.ASSERT, "hibi", "chal gaya antim mein")
             return tdb.getListString(currtime)
         }
 
@@ -150,5 +182,33 @@ class Predictor {
             }
         }
         return prt1
+    }
+
+    fun getresp(cst: String, ct: String):String {
+        val url = URL("http://192.168.43.48:8080/classify/")
+        val params: MutableMap<String, String> = LinkedHashMap()
+        params["csv"] = cst
+        params["Day"] = ct
+        val postData = StringBuilder()
+        for ((key, value) in params) {
+            if (postData.length != 0) postData.append('&')
+            postData.append(URLEncoder.encode(key, "UTF-8"))
+            postData.append('=')
+            postData.append(URLEncoder.encode(value.toString(), "UTF-8"))
+        }
+        val postDataBytes = postData.toString().toByteArray(charset("UTF-8"))
+        val conn = url.openConnection() as HttpURLConnection
+        conn.requestMethod = "POST"
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
+        conn.setRequestProperty("Content-Length", postDataBytes.size.toString())
+        conn.doOutput = true
+        conn.outputStream.write(postDataBytes)
+        var inn = BufferedReader(InputStreamReader(conn.inputStream, "UTF-8"))
+        val sb = StringBuilder()
+        var c: Int
+        while (inn.read().also { c = it } >= 0) {
+            sb.append(c.toChar())
+        }
+        return sb.toString()
     }
 }

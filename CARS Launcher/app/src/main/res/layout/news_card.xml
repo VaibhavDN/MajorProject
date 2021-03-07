@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250sp"
+    android:id="@+id/new_layout"
+    android:layout_height="200sp"
+    android:layout_margin="5sp">
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_launcher_background"
+                    android:id="@+id/newsimage"/>
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_gravity="bottom"
+                    android:textColorHighlight="@color/colorAccent"
+                    android:textSize="18dp"
+                    android:text="News itme 1"
+                    android:layout_margin="5sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fc0"/>
+
+
+
+
+
+
+
+</androidx.cardview.widget.CardView>
