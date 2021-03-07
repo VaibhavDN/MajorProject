@@ -121,6 +121,7 @@ class LeftFragment : Fragment() {
 
                 if(arr1.size < 2){
                     tx1.text = "Battery will last for " + batman +" hrs"
+                    Tdb.putFloat("life", batman.toFloat())
                 }
                 else{
                     var diff = (arr2[0] - arr2[arr2.size - 2]).toInt()
@@ -141,9 +142,11 @@ class LeftFragment : Fragment() {
 
                     if(ans > 0){
                         tx1.text = "Battery will last for " + ((batman/ans)).toInt().toString() + " hrs"
+                        Tdb.putFloat("life", (batman/ans).toFloat())
                     }
                     else{
                         tx1.text = "Battery will last for " + batman +" hrs"
+                        Tdb.putFloat("life", batman.toFloat())
                     }
                 }
 
