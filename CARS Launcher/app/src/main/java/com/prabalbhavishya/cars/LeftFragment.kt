@@ -120,23 +120,30 @@ class LeftFragment : Fragment() {
                 Tdb.putListLong("battdiff", arr2)
 
                 if(arr1.size < 2){
-                    tx1.text = "Battery will last for 80 hrs"
+                    tx1.text = "Battery will last for " + batman +" hrs"
                 }
                 else{
-                    var diff = arr2[0] - arr2[arr2.size - 1]
+                    var diff = (arr2[0] - arr2[arr2.size - 2]).toInt()
+                    var bdiff = arr1[arr1.size - 2] - arr1[0]
+                    println(arr2[0])
+                    println(arr2[arr2.size - 1])
                     for(i in 0 until arr1.size - 1){
                         var d = (arr1[i + 1] - arr1[i])/(((arr2[i] - arr2[i + 1])/1000).toDouble()/3600)
-                        ans += d //* ((arr2[i] - arr2[i + 1]).toDouble() / diff)
-                        print(ans)
+                        if(d > 0) {
+                            ans += d * ((arr2[i] - arr2[i + 1]).toDouble() / diff)
+                        }
+                        println(arr1[i].toString() + " " + arr2[i].toString())
 
                     }
-                    ans /= arr1.size
+                    //ans /= arr1.size
+                    ans = (bdiff / ((diff/1000).toDouble()/3600))
+                    println(diff)
 
                     if(ans > 0){
                         tx1.text = "Battery will last for " + ((batman/ans)).toInt().toString() + " hrs"
                     }
                     else{
-                        tx1.text = "Battery will last for 80 hrs"
+                        tx1.text = "Battery will last for " + batman +" hrs"
                     }
                 }
 
