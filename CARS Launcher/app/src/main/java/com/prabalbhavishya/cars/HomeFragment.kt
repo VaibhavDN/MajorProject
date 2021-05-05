@@ -166,15 +166,15 @@ class HomeFragment : Fragment() {
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 //Log.d("BottomSheet slideOffset: ", (slideOffset).toString())
-                //bottomSheet.setBackgroundColor(Color.argb((slideOffset * 200).toInt().coerceAtLeast(120), 0, 0, 0))
-                if (setblur == 1) {
-                    val wallp = WallpaperManager.getInstance(context)
-                    var wbmp = wallp.drawable.toBitmap()
-                    wbmp =
-                        Bitmap.createScaledBitmap(wbmp, wbmp.height / 512, wbmp.width / 512, true)
-                    bottomSheet.background = BitmapDrawable(resources, wbmp)
-                    setblur = 0
-                }
+                bottomSheet.setBackgroundColor(Color.argb((slideOffset * 200).toInt().coerceAtLeast(120), 0, 0, 0))
+//                if (setblur == 1) {
+//                    val wallp = WallpaperManager.getInstance(context)
+//                    var wbmp = wallp.drawable.toBitmap()
+//                    wbmp =
+//                        Bitmap.createScaledBitmap(wbmp, wbmp.height / 512, wbmp.width / 512, true)
+//                    bottomSheet.background = BitmapDrawable(resources, wbmp)
+//                    setblur = 0
+//                }
                 appDrawer_RecyclerView.alpha = slideOffset
                 drawerSearchBar.alpha = slideOffset
                 bottomSheet.background.alpha = (slideOffset * 255).toInt()

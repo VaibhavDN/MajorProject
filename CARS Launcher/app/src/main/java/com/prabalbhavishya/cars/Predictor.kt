@@ -144,6 +144,7 @@ class Predictor {
 
         if(tdb.getListString(currtime).isNotEmpty()){
             Log.println(Log.ASSERT, "hibi", "chal gaya antim mein")
+            Log.println(Log.ASSERT, "timeret", tdb.getListString(currtime).toString())
             return tdb.getListString(currtime)
         }
 
@@ -185,7 +186,7 @@ class Predictor {
     }
 
     fun getresp(cst: String, ct: String):String {
-        val url = URL("http://192.168.43.48:8080/classify/")
+        val url = URL("https://clfengine.herokuapp.com/classify/")
         val params: MutableMap<String, String> = LinkedHashMap()
         params["csv"] = cst
         params["Day"] = ct
@@ -209,6 +210,7 @@ class Predictor {
         while (inn.read().also { c = it } >= 0) {
             sb.append(c.toChar())
         }
+        Log.println(Log.WARN, "ret", sb.toString())
         return sb.toString()
     }
 }

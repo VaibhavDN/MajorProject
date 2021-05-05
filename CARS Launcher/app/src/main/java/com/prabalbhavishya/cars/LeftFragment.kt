@@ -3,30 +3,28 @@ package com.prabalbhavishya.cars
 import android.content.Context
 import android.content.Context.BATTERY_SERVICE
 import android.content.Intent
-import android.graphics.Color
+import android.hardware.display.DisplayManager
+import android.net.wifi.WifiManager
 import android.os.*
 import android.util.Log
+import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.mikephil.charting.charts.BarChart
-import com.github.mikephil.charting.components.Description
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_left.*
 import kotlinx.android.synthetic.main.fragment_left.view.*
 import me.everything.providers.android.calendar.CalendarProvider
 import org.jsoup.Jsoup
+import java.io.File
+import java.io.FileOutputStream
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -102,12 +100,54 @@ class LeftFragment : Fragment() {
         runn2 = Runnable {
             kotlin.run {
                 handle.postDelayed(runn2, 120 * 1000)
+
+                val path = context?.getExternalFilesDir("UsageDir")
+                val file = File(path, "batteryData.csv")
+
                 var ans = 0.0
                 val Tdb = TinyDB(context)
                 val arr1 = Tdb.getListDouble("batt")
                 val arr2 = Tdb.getListLong("battdiff")
                 val bm = context?.getSystemService(BATTERY_SERVICE) as BatteryManager
                 val batman:Int = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+                val time = System.currentTimeMillis()
+
+                val dm = context?.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+                var screenOn = 0
+                for (display in dm.displays) {
+                    if (display.state != Display.STATE_OFF) {
+                        screenOn = 1
+                    }
+                }
+
+                val wifiMgr = context?.getSystemService(Context.WIFI_SERVICE) as WifiManager?
+                var wifion = 0
+                if (wifiMgr!!.isWifiEnabled) { // Wi-Fi adapter is ON
+                    wifion = 1
+                }
+
+                val wifiManager = context?.getSystemService(Context.WIFI_SERVICE) as WifiManager?
+                val apState =
+                    wifiManager!!.javaClass.getMethod("getWifiApState").invoke(wifiManager) as Int
+
+                if (apState == 13) {
+                    wifion = 1
+                }
+
+                var textToSave = "$time,$screenOn,$wifion,$batman\n"
+
+                try {
+                    val fileOutputStream = FileOutputStream(file, true)
+                    fileOutputStream.write(textToSave.toByteArray())
+                    fileOutputStream.close()
+                }
+                catch (e: Exception){
+                    Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show()
+                }
+
+
+
+
 
                 arr1.add(0, batman.toDouble())
                 arr2.add(0, System.currentTimeMillis())
@@ -362,7 +402,7 @@ class LeftFragment : Fragment() {
         runn = Runnable {
                 kotlin.run {
                     Thread {
-                        var url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=a1f1534aaf824034a963f6ef94eb3157"
+                        var url = "https://clfengine.herokuapp.com/news/?type=neu"
                         try {
                             val doc = Jsoup.connect(url).ignoreContentType(true)
                             //Log.println(Log.ASSERT, "Open", doc.execute().body().toString())

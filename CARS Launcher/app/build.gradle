@@ -53,6 +53,7 @@ dependencies {
     implementation 'me.everything:providers-android:1.0.1'
     compileOnly 'com.google.android.wearable:wearable:2.6.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.hudomju:swipe-to-dismiss-undo:1.0'
 
 
 }
